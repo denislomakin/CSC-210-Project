@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Personal Schedule </title>
+<style>
+a:link, a:visited {
+  background-color: #f44336;
+  color: white;
+  padding: 15px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+a:hover, a:active {
+  background-color: red;
+}
+</style>
+</head>
+<body>
+<h1 class="page-header">Welcome, {{ name }}</h1>
+<h2>logout button</h2>
+<a href="{{ url_for('logout') }}">Log Out</a>
+
+
+<p>Personal Schedule page for users</p>
+
+
+</body>
+</html>

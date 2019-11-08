@@ -1,0 +1,19 @@
+
+</body>
+</html>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Login </title>
+  </head>
+  <body>
+    <form method="POST" action="/login">
+         <h2>Please login</h2>
+      {{ form.hidden_tag() }}
+      {{ form.username.label }}:{{ form.username() }}<br>
+      {{ form.password.label }}:{{ form.password() }}<br>
+      {{ form.remember.label }}:{{ form.remember() }}<br>
+      <button> Login</button>
+    </form>
+  </body>
+</html>
