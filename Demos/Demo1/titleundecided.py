@@ -90,7 +90,7 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
 
-        return '<h1>Your account has been created</h1>'
+        flash('Your account has been created')
     else:
         flash_errors(forms)
     
