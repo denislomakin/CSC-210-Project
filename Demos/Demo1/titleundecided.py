@@ -40,7 +40,7 @@ class SignUpForm(FlaskForm):
     username = StringField('Choose Your Username', validators=[InputRequired(), Length(min=4, max=64, message="Username must be between 4 and 64 characters long.")])
     password = PasswordField('Create Password', validators=[InputRequired(), Length(min=8, max=128, message="Password must be between 8 and 128 characters long.")])
     password2 = PasswordField(
-        'Enter password again', validators=[DataRequired(), EqualTo('password')])
+        'Enter password again', validators=[DataRequired(), EqualTo('password', message="Passwords must match")])
     
 
     def chek_username(self, username):
