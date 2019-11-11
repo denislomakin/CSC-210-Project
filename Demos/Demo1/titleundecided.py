@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template, redirect, url_for, flash
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm 
 from wtforms import StringField, PasswordField, BooleanField
@@ -53,6 +53,10 @@ class SignUpForm(FlaskForm):
         if user is not None:
             raise ValidationError('Please use a different email address.')
 
+def flash_errors(form):
+    for field, errors in form.errors.items():
+        for error in errors:
+            flash(u"Error: %s" % error)
 
 @app.route('/')
 def home():
@@ -85,6 +89,8 @@ def signup():
         db.session.commit()
 
         return '<h1>Your account has been created</h1>'
+    else:
+        flash_errors(forms)
     
 
     return render_template('signup.html', form=form)
