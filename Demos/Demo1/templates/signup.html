@@ -14,6 +14,12 @@
             {{form.password2.label}}:{{form.password2()}}  <br>
           <button> signup</button>
         </form>
-         
+    {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages%}
+                <h3>{{ message }}</h3>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}    
     </body>
 </html>
