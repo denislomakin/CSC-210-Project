@@ -92,7 +92,7 @@ def signup():
 
         flash('Your account has been created')
     else:
-        flash_errors(forms)
+        flash_errors(form)
     
 
     return render_template('signup.html', form=form)
