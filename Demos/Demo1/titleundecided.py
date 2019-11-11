@@ -74,6 +74,8 @@ def login():
                 return redirect(url_for('personalpage'))
 
         return '<h1>Wrong username or password</h1>'
+    else:
+        flash_errors(form)
        
 
     return render_template('login.html', form=form)
