@@ -23,7 +23,7 @@ login_manager.login_view = 'login'
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True)
-    email = db.Column(db.String(64), unique=True)
+    email = db.Column(db.String(64))
     password = db.Column(db.String(128))
 
 @login_manager.user_loader
@@ -43,7 +43,7 @@ class SignUpForm(FlaskForm):
         'Enter password again', validators=[DataRequired(), EqualTo('password', message="Passwords must match")])
     
 
-    def chek_username(self, username):
+    def check_username(self, username):
         user = User.query.filter_by(username=username.data).first()
         if user is not None:
             raise ValidationError('Please use a different username.')
@@ -94,7 +94,9 @@ def signup():
         db.session.add(new_user)
         db.session.commit()
 
+        login_user(new_user)
         flash('Your account has been created')
+        return redirect(url_for('personalpage'))
     else:
         flash_errors(form)
     

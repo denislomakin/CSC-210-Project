@@ -1,35 +1,20 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<title>Schedule app (name not decided) </title>
-<style>
-a:link, a:visited {
-  background-color: #f44336;
-  color: white;
-  padding: 15px 25px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-}
-
-a:hover, a:active {
-  background-color: red;
-}
-</style>
+	<title>Schedule app (name not decided) </title>
+	<link rel = "stylesheet" href = "{{ url_for('static', filename='styles.css') }}"/>
 </head>
+
 <body>
-<h1> Home Page</h1>
-<h2>login button</h2>
-<a href="{{ url_for('login') }}">Login</a>
+	<h1> Home Page</h1>
+	<h2>login button</h2>
+	<a href="{{ url_for('login') }}">Login</a>
 
+	<h2>signup Button</h2>
+	<a href="{{ url_for('signup') }}">Sign Up</a>
 
-<h2>signup Button</h2>
-<a href="{{ url_for('signup') }}">Sign Up</a>
-
-
-<p>This is the home page for project</p>
-
-
+	<p>This is the home page for project</p>
 </body>
 </html>
 

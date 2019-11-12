@@ -3,7 +3,10 @@
 <!DOCTYPE html>
 <html>
     
-    <head> <title> Create new account </title> </head>
+    <head> 
+        <title> Create new account </title> 
+        <link rel = "stylesheet" href = "{{ url_for('static', filename='styles.css') }}"/>
+    </head>
     <body>
         <form method="POST" action="/signup">
             <h2>Please create a new account</h2>
