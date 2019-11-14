@@ -60,6 +60,8 @@ def flash_errors(form):
 
 @app.route('/')
 def home():
+    if current_user.is_authenticated:
+        return redirect(url_for('personalpage'))
     return render_template('home.html')
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -72,8 +74,9 @@ def login():
             if check_password_hash(user.password, form.password.data):
                 login_user(user, remember=form.remember.data)
                 return redirect(url_for('personalpage'))
+    else:
+        flash('Wrong username or password')
 
-    flash('Wrong username or password')      
 
     return render_template('login.html', form=form)
 
