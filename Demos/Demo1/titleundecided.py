@@ -33,7 +33,7 @@ def load_user(user_id):
 class LoginForm(FlaskForm):
     username = StringField('Username:', validators=[InputRequired(), Length(min=4, max=64, message="Username must be between 4 and 64 characters long.")])
     password = PasswordField('Password:', validators=[InputRequired(), Length(min=8, max=128, message="Password must be between 8 and 128 characters long.")])
-    remember = BooleanField('remember me')
+    remember = BooleanField('Remember Me')
 
 class SignUpForm(FlaskForm):
     email = StringField('Enter Your Email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=64, message="Email must be less than 64 characters.")])

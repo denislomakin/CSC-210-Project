@@ -10,13 +10,13 @@
     </head>
     <body>
         <div class="container">
-            <form method="POST" action="/signup">
+            <form method="POST" action="/signup" class="container">
                 <h2>Create Your Account</h2>
                 {{ form.hidden_tag() }}
-                {{form.email.label}}:{{form.email()}} <br>
-                {{form.username.label}}:{{form.username()}} <br>
-                {{form.password.label}}:{{form.password()}} <br>
-                {{form.password2.label}}:{{form.password2()}}  <br>
+                <div class="line">{{form.email.label}}{{form.email()}}</div><br>
+                <div class="line">{{form.username.label}}{{form.username()}}</div><br>
+                <div class="line">{{form.password.label}}{{form.password()}}</div><br>
+                <div class="line">{{form.password2.label}}{{form.password2()}}</div><br>
               <button> signup</button>
             </form>
         {% with messages = get_flashed_messages() %}
