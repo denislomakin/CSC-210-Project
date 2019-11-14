@@ -73,10 +73,7 @@ def login():
                 login_user(user, remember=form.remember.data)
                 return redirect(url_for('personalpage'))
 
-        flash('Wrong username or password')
-    else:
-        flash_errors(form)
-       
+    flash('Wrong username or password')      
 
     return render_template('login.html', form=form)
 
