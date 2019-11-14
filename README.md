@@ -1,4 +1,4 @@
-# CSC-210-Project
+# CSC210 Final Group Project: Scheduling App
 
 ## How to Use
 
@@ -19,3 +19,5 @@ Then, to run the application, just run:
 ## Known Problems
 
 * None!
+
+Jamie Huber, Mitchell Jones, Seungmin Kuk, and Denis Lomakin
