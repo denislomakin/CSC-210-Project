@@ -1,27 +1,27 @@
-
-</body>
-</html>
 <!DOCTYPE html>
 <html>
   <head>
-    <title> Login </title>
+    <title>CSC210 Demo 1 | Login</title>
     <link rel = "stylesheet" href = "{{ url_for('static', filename='styles.css') }}"/>
+    <link rel = "stylesheet" href = "{{ url_for('static', filename='normalize.css') }}"/>
   </head>
   <body>
-    <form method="POST" action="/login">
-         <h2>Please login</h2>
-      {{ form.hidden_tag() }}
-      {{ form.username.label }}:{{ form.username() }}<br>
-      {{ form.password.label }}:{{ form.password() }}<br>
-      {{ form.remember.label }}:{{ form.remember() }}<br>
-      <button> Login</button>
-    </form>
-  {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages%}
-                <h3>{{ message }}</h3>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+    <div class="container">
+      <form method="POST" action="/login">
+        <h2>Login</h2>
+        {{ form.hidden_tag() }}
+        {{ form.username.label }}:{{ form.username() }}<br>
+        {{ form.password.label }}:{{ form.password() }}<br>
+        {{ form.remember.label }}:{{ form.remember() }}<br>
+        <button> Login</button>
+      </form>
+    {% with messages = get_flashed_messages() %}
+          {% if messages %}
+              {% for message in messages%}
+                  <h3>{{ message }}</h3>
+              {% endfor %}
+          {% endif %}
+      {% endwith %}
+    </div>
   </body>
 </html>

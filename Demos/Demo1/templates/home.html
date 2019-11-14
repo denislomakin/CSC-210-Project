@@ -2,19 +2,17 @@
 <html>
 
 <head>
-	<title>Schedule app (name not decided) </title>
+	<title>CSC210 Demo 1</title>
 	<link rel = "stylesheet" href = "{{ url_for('static', filename='styles.css') }}"/>
+	<link rel = "stylesheet" href = "{{ url_for('static', filename='normalize.css') }}"/>
 </head>
 
 <body>
-	<h1> Home Page</h1>
-	<h2>login button</h2>
-	<a href="{{ url_for('login') }}">Login</a>
-
-	<h2>signup Button</h2>
-	<a href="{{ url_for('signup') }}">Sign Up</a>
-
-	<p>This is the home page for project</p>
+	<div class="container">
+		<h1>Welcome to Demo #1</h1>
+		<a href="{{ url_for('login') }}">Login</a>
+		<a href="{{ url_for('signup') }}">Sign Up</a>
+	</div>
 </body>
 </html>
 

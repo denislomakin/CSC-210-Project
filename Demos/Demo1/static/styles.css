@@ -1,10 +1,31 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+html {
+  font-family: 'Roboto', sans-serif;
+  height:100vh;
+  width:100vw;
+}
+body {
+  height:100%;
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+.container {
+  max-width:90%;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
 .error {
-	color: #ff0000;
+  color: #ff0000;
 }
 
-a:link, a:visited {
+a:link, a:visited, button {
   background-color: #f44336;
   color: white;
+  margin: 7px 0;
+  border-radius:5px;
   padding: 15px 25px;
   text-align: center;
   text-decoration: none;

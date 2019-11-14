@@ -4,25 +4,28 @@
 <html>
     
     <head> 
-        <title> Create new account </title> 
+        <title>CSC210 Demo 1 | Create Account</title> 
         <link rel = "stylesheet" href = "{{ url_for('static', filename='styles.css') }}"/>
+        <link rel = "stylesheet" href = "{{ url_for('static', filename='normalize.css') }}"/>
     </head>
     <body>
-        <form method="POST" action="/signup">
-            <h2>Please create a new account</h2>
-            {{ form.hidden_tag() }}
-            {{form.email.label}}:{{form.email()}} <br>
-            {{form.username.label}}:{{form.username()}} <br>
-            {{form.password.label}}:{{form.password()}} <br>
-            {{form.password2.label}}:{{form.password2()}}  <br>
-          <button> signup</button>
-        </form>
-    {% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages%}
-                <h3>{{ message }}</h3>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}    
+        <div class="container">
+            <form method="POST" action="/signup">
+                <h2>Create Your Account</h2>
+                {{ form.hidden_tag() }}
+                {{form.email.label}}:{{form.email()}} <br>
+                {{form.username.label}}:{{form.username()}} <br>
+                {{form.password.label}}:{{form.password()}} <br>
+                {{form.password2.label}}:{{form.password2()}}  <br>
+              <button> signup</button>
+            </form>
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                {% for message in messages%}
+                    <h3>{{ message }}</h3>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        </div>
     </body>
 </html>

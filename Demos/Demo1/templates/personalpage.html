@@ -1,21 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Personal Schedule </title>
+	<title>CSC210 Demo 1 | Schedule</title>
 	<link rel = "stylesheet" href = "{{ url_for('static', filename='styles.css') }}"/>
+	<link rel = "stylesheet" href = "{{ url_for('static', filename='normalize.css') }}"/>
 </head>
 <body>
-	<h1 class="page-header">Welcome, {{ name }}</h1>
-	<h2>logout button</h2>
-	<a href="{{ url_for('logout') }}">Log Out</a>
+	<div class="container">
+		<h1 class="page-header">Welcome, {{ name }}</h1>
+		<a href="{{ url_for('logout') }}">Log Out</a>
 
-	<p>Personal Schedule page for users</p>
-	{% with messages = get_flashed_messages() %}
-        {% if messages %}
-            {% for message in messages%}
-                <h3>{{ message }}</h3>
-            {% endfor %}
-        {% endif %}
-    {% endwith %}
+		<p>Personal Schedule page for users</p>
+		{% with messages = get_flashed_messages() %}
+	        {% if messages %}
+	            {% for message in messages%}
+	                <h3>{{ message }}</h3>
+	            {% endfor %}
+	        {% endif %}
+	    {% endwith %}
+	</div>
 </body>
 </html>
