@@ -9,5 +9,10 @@
 	<link rel='stylesheet' href='{{ url_for("static", filename="main.css") }}'/>
 </head>
 <body>
+	<div class="box">
+		<h1>Welcome to Demo #1</h1>
+		<a href="{{ url_for('login') }}">Login</a>
+		<a href="{{ url_for('signup') }}">Sign Up</a>
+	</div>
 </body>
 </html>
