@@ -7,6 +7,7 @@ class LoginForm(FlaskForm):
                                                                            message="Username must be between 4 and 64 characters long.")])
     password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=128,
                                                                              message="Password must be between 8 and 128 characters long.")])
+    remember = BooleanField('Remember Me')
 
 
 class SignupForm(FlaskForm):

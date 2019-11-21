@@ -40,7 +40,7 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         if user:
             if check_password_hash(user.password, form.password.data):
-                login_user(user, remember=False)
+                login_user(user, remember=form.remember.data)
                 return redirect('/')
     else:
         flash('Wrong username or password')
