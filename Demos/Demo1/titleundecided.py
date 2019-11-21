@@ -31,6 +31,9 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(64), unique=True)
     password = db.Column(db.String(128))
     
+    def verify_password(self, password):
+        return check_password_hash(self.password, password)
+    
 class Event(db.Model):
     id = db.Column(db.Integer, db.ForeignKey(User.id), primary_key=True)
     name = db.Column(db.String(256))
