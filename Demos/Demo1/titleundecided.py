@@ -40,9 +40,6 @@ class Event(db.Model):
     start = db.Column(db.DateTime(), nullable=False)
     end = db.Column(db.DateTime(), nullable=False)
     
-    def verify_password(self, password):
-        return check_password_hash(self.password, password)
-    
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
