@@ -20,12 +20,26 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+UserEvents = db.Table('UserEvents',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('event_id', db.Integer, db.ForeignKey('event.id'))
+)
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True)
     email = db.Column(db.String(64))
     password = db.Column(db.String(128))
-
+    
+class Event(db.Model):
+    id = db.Column(db.Integer, db.ForeignKey(User.id), primary_key=True)
+    name = db.Column(db.String(256))
+    start = db.Column(db.DateTime(), nullable=False)
+    end = db.Column(db.DateTime(), nullable=False)
+    
+    def verify_password(self, password):
+        return check_password_hash(self.password, password)
+    
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -70,13 +84,10 @@ def login():
 
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-        if user:
-            if check_password_hash(user.password, form.password.data):
-                login_user(user, remember=form.remember.data)
-                return redirect(url_for('personalpage'))
-    else:
-        flash('Wrong username or password')
-
+        if user is not None and user.verify_password(form.password.data):
+            login_user(user)
+            return redirect(url_for('personalpage'))
+        flash("Invalid Username or password")
 
     return render_template('login.html', form=form)
 
