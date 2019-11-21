@@ -53,15 +53,16 @@ def signup():
     if form.validate_on_submit():
         hashed_password = generate_password_hash(form.password.data, method='sha256')
         new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
-        user = User.query.filter_by(username=form.username.data).first()
-        if user:
-            flash("Username taken")
-            return render_template('signup.html', form=form)
+        if User.query.filter_by(username=form.username.data).first() is not None:
+            flash('Username taken')
+            return redirect('/')
+        if User.query.filter_by(email=form.email.data).first() is not None:
+            flash('That email is already associated with a MeetUp account.')
+            return redirect('/')
         db.session.add(new_user)
         db.session.commit()
 
         login_user(new_user)
-        flash('Your account has been created')
         return redirect('/')
     else:
         flash_errors(form)

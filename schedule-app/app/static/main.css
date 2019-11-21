@@ -3,6 +3,8 @@ html {
     font-family: 'Roboto', sans-serif;
     min-height:100vh;
     min-width:100%;
+    overflow-x:hidden;
+    overflow-y:hidden;
 }
 body {
     min-height:100vh;
@@ -45,14 +47,15 @@ footer {
 }
 .left {
     padding:0 0 0 20px;
-    justify-content:start !important;
+    justify-content:flex-start !important;
 }
 .right {
     padding:0 20px 0 0;
-    justify-content:end !important;
+    justify-content:flex-end !important;
 }
 .sidebar {
     display:none;
+    flex-direction:column;
     position:absolute;
     top:0;
     right:0;
@@ -62,17 +65,20 @@ footer {
     box-shadow:0 0 8px 0px #B3B3B3;
     overflow-y:scroll;
 }
+.sidebar.open {
+    display:flex !important;
+}
 .sidebar > .close {
     position:absolute;
     top:31px;
     right:31px;
 }
 .sidebarContent {
-    width:100%;
-    max-height:100%;
+    width:90%;
     display:flex;
     flex-direction:column;
-    padding:13px 20px;
+    padding:13px 5%;
+    flex-grow:1;
 }
 .sidebarContent h2 {
     font-family:'Montserrat';
@@ -196,6 +202,22 @@ input {
     -webkit-transform:rotate(45deg);
     -ms-transform:rotate(45deg);
     transform:rotate(45deg);
+}
+.sidebarError {
+    background:#E04E39;
+    width:100%;
+    height:auto;
+}
+.sidebarError > div {
+    color:white;
+    padding:15px;
+    text-align:center;
+}
+.g-recaptcha {
+    width:100%;
+}
+.g-recaptcha > div {
+    width:100%;
 }
 .faButton {
     font-size:27pt;

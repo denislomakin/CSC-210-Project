@@ -20,12 +20,26 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
 
+UserEvents = db.Table('UserEvents',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id')),
+    db.Column('event_id', db.Integer, db.ForeignKey('event.id'))
+)
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True)
-    email = db.Column(db.String(64))
+    email = db.Column(db.String(64), unique=True)
     password = db.Column(db.String(128))
-
+    
+    def verify_password(self, password):
+        return check_password_hash(self.password, password)
+    
+class Event(db.Model):
+    id = db.Column(db.Integer, db.ForeignKey(User.id), primary_key=True)
+    name = db.Column(db.String(256))
+    start = db.Column(db.DateTime(), nullable=False)
+    end = db.Column(db.DateTime(), nullable=False)
+    
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
@@ -37,6 +51,7 @@ class LoginForm(FlaskForm):
 
 class SignUpForm(FlaskForm):
     email = StringField('Email Address', validators=[InputRequired(), Email(message='Invalid email'), Length(max=64, message="Email must be less than 64 characters.")])
+    email2 = StringField('Retype Email Address', validators=[InputRequired(), Email(message='Invalid email'), EqualTo('email', message="Emails must match")])
     username = StringField('Username', validators=[InputRequired(), Length(min=4, max=64, message="Username must be between 4 and 64 characters long.")])
     password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=128, message="Password must be between 8 and 128 characters long.")])
     password2 = PasswordField(
@@ -70,13 +85,10 @@ def login():
 
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-        if user:
-            if check_password_hash(user.password, form.password.data):
-                login_user(user, remember=form.remember.data)
-                return redirect(url_for('personalpage'))
-    else:
-        flash('Wrong username or password')
-
+        if user is not None and user.verify_password(form.password.data):
+            login_user(user)
+            return redirect(url_for('personalpage'))
+        flash("Invalid Username or password")
 
     return render_template('login.html', form=form)
 
@@ -90,6 +102,10 @@ def signup():
         user = User.query.filter_by(username=form.username.data).first()
         if user:
             flash("Username taken")
+            return render_template('signup.html', form=form)
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            flash("Email already in use")
             return render_template('signup.html', form=form)
         db.session.add(new_user)
         db.session.commit()
