@@ -1,0 +1,44 @@
+.not-selected {
+	width: 100px;
+	background-color: #f0f0f0;
+	border: 1px solid black;
+}
+
+.not-selected:hover {
+	background-color: white;
+}
+
+.selected {
+	width: 100px;
+	background-color: #5f7eed;
+	border: 1px solid white;
+}
+
+.selected:hover {
+	background-color: #849df5;
+}
+
+.time {
+	width: 60px;
+}
+
+.days {
+
+}
+
+.day {
+	width: 50px;
+}
+
+table {
+	width: 700px;
+	border-collapse: collapse;
+}
+
+tr {
+	width: 200px;
+}
+
+td {
+	height: 25px;
+}
