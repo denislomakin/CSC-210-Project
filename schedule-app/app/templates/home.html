@@ -30,6 +30,7 @@
                         <div class="line">{{ sform.username.label }}{{ sform.username() }}</div><br>
                         <div class="line">{{ sform.password.label }}{{ sform.password() }}</div><br>
                         <div class="line">{{ sform.password2.label }}{{ sform.password2() }}</div><br>
+                        {{ sform.recaptcha }}
                         <button class='button fSubmit'>Sign Up</button>
                     </form>
                 {% endif %}

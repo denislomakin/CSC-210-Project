@@ -3,6 +3,8 @@ html {
     font-family: 'Roboto', sans-serif;
     min-height:100vh;
     min-width:100%;
+    overflow-x:hidden;
+    overflow-y:hidden;
 }
 body {
     min-height:100vh;
@@ -45,11 +47,11 @@ footer {
 }
 .left {
     padding:0 0 0 20px;
-    justify-content:start !important;
+    justify-content:flex-start !important;
 }
 .right {
     padding:0 20px 0 0;
-    justify-content:end !important;
+    justify-content:flex-end !important;
 }
 .sidebar {
     display:none;
@@ -210,6 +212,12 @@ input {
     color:white;
     padding:15px;
     text-align:center;
+}
+.g-recaptcha {
+    width:100%;
+}
+.g-recaptcha > div {
+    width:100%;
 }
 .faButton {
     font-size:27pt;
