@@ -86,18 +86,20 @@ footer {
 .sidebarContent form {
     text-align:center;
 }
-.sidebarContent button {
+.button {
     position: relative;
     padding: 1em 1.5em;
     border: none;
     background-color: transparent;
     cursor: pointer;
     outline: none;
+    text-decoration:none;
+    color:black;
     font-size: 18px;
     margin: 1em 0.8em;
     width:80%;
 }
-.sidebarContent button:after, .sidebarContent button:before {
+.button:after, .button:before {
     content: '';
     display: block;
     position: absolute;
@@ -109,11 +111,11 @@ footer {
     transition: all 0.3s ease;
     transform: scale(0.85);
 }
-.sidebarContent button:hover:before {
+.button:hover:before {
     top: 0;
     transform: scale(1);
 }
-.sidebarContent button:hover:after {
+.button:hover:after {
     transform: scale(1);
 }
 .line {

@@ -30,9 +30,7 @@ def flash_errors(form):
 
 @app.route('/')
 def index():
-    if current_user.is_authenticated:
-        return redirect(url_for('dashboard'))
-    return render_template('home.html', lform=LoginForm(), sform=SignupForm())
+    return render_template('home.html', user=current_user, lform=LoginForm(), sform=SignupForm())
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -43,7 +41,7 @@ def login():
         if user:
             if check_password_hash(user.password, form.password.data):
                 login_user(user, remember=False)
-                return redirect(url_for('dashboard'))
+                return redirect('/')
     else:
         flash('Wrong username or password')
     return redirect('/')
@@ -64,16 +62,10 @@ def signup():
 
         login_user(new_user)
         flash('Your account has been created')
-        return redirect(url_for('dashboard'))
+        return redirect('/')
     else:
         flash_errors(form)
     return redirect('/')
-
-
-@app.route('/dashboard')
-@login_required
-def dashboard():
-    return render_template('dashboard.html', name=current_user.username)
 
 @app.route('/logout')
 @login_required
