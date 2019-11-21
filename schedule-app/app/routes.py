@@ -1,6 +1,6 @@
 from app import app
 from app.forms import LoginForm, SignupForm
-from flask import Flask, render_template, redirect, url_for, flash
+from flask import Flask, render_template, send_from_directory, redirect, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
@@ -28,12 +28,11 @@ def flash_errors(form):
         for error in errors:
             flash(u"Error: %s" % error)
 
-
 @app.route('/')
 def index():
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
-    return render_template('home.html')
+    return render_template('home.html', lform=LoginForm(), sform=SignupForm())
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -43,11 +42,11 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
         if user:
             if check_password_hash(user.password, form.password.data):
-                login_user(user, remember=form.remember.data)
+                login_user(user, remember=False)
                 return redirect(url_for('dashboard'))
     else:
         flash('Wrong username or password')
-    return render_template('login.html', form=form)
+    return redirect('/')
 
 
 @app.route('/signup', methods=['GET', 'POST'])
@@ -68,8 +67,7 @@ def signup():
         return redirect(url_for('dashboard'))
     else:
         flash_errors(form)
-
-    return render_template('signup.html', form=form)
+    return redirect('/')
 
 
 @app.route('/dashboard')

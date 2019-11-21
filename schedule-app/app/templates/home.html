@@ -1,18 +1,42 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset='utf-8'>
-	<title></title>
+    {% include 'includes/head.html' %}
+	<title>MeetUp</title>
 	<meta name='description' content='TODO: write description'>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link rel='stylesheet' href='{{ url_for("static", filename="normalize.css") }}'/>
-	<link rel='stylesheet' href='{{ url_for("static", filename="main.css") }}'/>
 </head>
 <body>
-	<div class="box">
-		<h1>Welcome to Demo #1</h1>
-		<a href="{{ url_for('login') }}">Login</a>
-		<a href="{{ url_for('signup') }}">Sign Up</a>
-	</div>
+    {% include 'includes/header.html' %}
+    <main class='body'>
+        <div class='sidebar'>
+            <div class='close faButton'><i class="fas fa-times"></i></div>
+            <div class='sidebarContent'>
+                <h2>Your Account</h2>
+                <form name='loginForm' method='POST' action='{{ url_for("login") }}'>
+                {{ lform.hidden_tag() }}
+                <div class="line">{{ lform.username.label }}{{ lform.username() }}</div><br>
+                <div class="line">{{ lform.password.label }}{{ lform.password() }}</div><br>
+                <button>Login</button>
+            </form>
+            <h4>OR</h4>
+            <form name='signupForm' method='POST' action='{{ url_for("signup") }}'>
+                {{ sform.hidden_tag() }}
+                <div class="line">{{ sform.email.label }}{{ sform.email() }}</div><br>
+                <div class="line">{{ sform.username.label }}{{ sform.username() }}</div><br>
+                <div class="line">{{ sform.password.label }}{{ sform.password() }}</div><br>
+                <div class="line">{{ sform.password2.label }}{{ sform.password2() }}</div><br>
+                <button>Sign Up</button>
+            </form>
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages%}
+                        <h3>{{ message }}</h3>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+            </div>
+        </div>
+    </main>
+    {% include 'includes/footer.html' %}
 </body>
 </html>
