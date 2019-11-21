@@ -18,8 +18,10 @@ If somebody else adds a new dependency, you will need to download that dependenc
 
 ## To-Do List
 
-* Come up with name
-* Build application
+* Forgot Password Link (sends an email with reset code)
+* Build Application UI
+* Build Application Back-End
+
 
 ## Known Problems
 
