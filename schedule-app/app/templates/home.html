@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% include 'includes/head.html' %}
+	<title>MeetUp</title>
+	<meta name='description' content='TODO: write description'>
+</head>
+<body>
+    {% include 'includes/header.html' %}
+    <main class='body'>
+        <div class='sidebar'>
+            <div class='close faButton'><i class="fas fa-times"></i></div>
+            <div class='sidebarContent'>
+                <h2>Your Account</h2>
+                {% if user.is_authenticated %}
+                    <h2>Welcome, {{ user.username }}</h2>
+                    <a class='button' href="{{ url_for('logout') }}">Log Out</a>
+                {% else %}
+                    <form name='loginForm' method='POST' action='{{ url_for("login") }}'>
+                        {{ lform.hidden_tag() }}
+                        <div class="line">{{ lform.username.label }}{{ lform.username() }}</div><br>
+                        <div class="line">{{ lform.password.label }}{{ lform.password() }}</div><br>
+                        <div class="line">{{ lform.remember.label }}<label class='check'>{{ lform.remember() }}<span class='checkmark'></span></label></div><br>
+                        <button class='button'>Login</button>
+                    </form>
+                    <h4>OR</h4>
+                    <form name='signupForm' method='POST' action='{{ url_for("signup") }}'>
+                        {{ sform.hidden_tag() }}
+                        <div class="line">{{ sform.email.label }}{{ sform.email() }}</div><br>
+                        <div class="line">{{ sform.username.label }}{{ sform.username() }}</div><br>
+                        <div class="line">{{ sform.password.label }}{{ sform.password() }}</div><br>
+                        <div class="line">{{ sform.password2.label }}{{ sform.password2() }}</div><br>
+                        <button class='button'>Sign Up</button>
+                    </form>
+                    {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                            {% for message in messages%}
+                                <h3>{{ message }}</h3>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+            {% endif %}
+            </div>
+        </div>
+    </main>
+    {% include 'includes/footer.html' %}
+</body>
+</html>
