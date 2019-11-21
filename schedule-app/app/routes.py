@@ -46,6 +46,10 @@ def login():
         flash('Wrong username or password')
     return redirect('/')
 
+@app.route('/scheduler', methods=['GET', 'POST'])
+def scheduler():
+    return render_template('scheduler.html')
+
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
