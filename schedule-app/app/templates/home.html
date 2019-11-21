@@ -21,7 +21,7 @@
                         <div class="line">{{ lform.username.label }}{{ lform.username() }}</div><br>
                         <div class="line">{{ lform.password.label }}{{ lform.password() }}</div><br>
                         <div class="line">{{ lform.remember.label }}<label class='check'>{{ lform.remember() }}<span class='checkmark'></span></label></div><br>
-                        <button class='button'>Login</button>
+                        <button class='button fSubmit'>Login</button>
                     </form>
                     <h4>OR</h4>
                     <form name='signupForm' method='POST' action='{{ url_for("signup") }}'>
@@ -30,16 +30,18 @@
                         <div class="line">{{ sform.username.label }}{{ sform.username() }}</div><br>
                         <div class="line">{{ sform.password.label }}{{ sform.password() }}</div><br>
                         <div class="line">{{ sform.password2.label }}{{ sform.password2() }}</div><br>
-                        <button class='button'>Sign Up</button>
+                        <button class='button fSubmit'>Sign Up</button>
                     </form>
-                    {% with messages = get_flashed_messages() %}
-                        {% if messages %}
-                            {% for message in messages%}
-                                <h3>{{ message }}</h3>
-                            {% endfor %}
-                        {% endif %}
-                    {% endwith %}
-            {% endif %}
+                {% endif %}
+            </div>
+            <div class='sidebarError'>
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages%}
+                            <div>{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
             </div>
         </div>
     </main>
