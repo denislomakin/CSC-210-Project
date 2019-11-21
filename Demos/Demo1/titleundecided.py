@@ -28,7 +28,7 @@ UserEvents = db.Table('UserEvents',
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True)
-    email = db.Column(db.String(64))
+    email = db.Column(db.String(64), unique=True)
     password = db.Column(db.String(128))
     
 class Event(db.Model):
@@ -51,6 +51,7 @@ class LoginForm(FlaskForm):
 
 class SignUpForm(FlaskForm):
     email = StringField('Email Address', validators=[InputRequired(), Email(message='Invalid email'), Length(max=64, message="Email must be less than 64 characters.")])
+    email2 = StringField('Retype Email Address', validators=[InputRequired(), Email(message='Invalid email'), EqualTo('email', message="Emails must match")])
     username = StringField('Username', validators=[InputRequired(), Length(min=4, max=64, message="Username must be between 4 and 64 characters long.")])
     password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=128, message="Password must be between 8 and 128 characters long.")])
     password2 = PasswordField(
@@ -101,6 +102,10 @@ def signup():
         user = User.query.filter_by(username=form.username.data).first()
         if user:
             flash("Username taken")
+            return render_template('signup.html', form=form)
+        user = User.query.filter_by(email=form.email.data).first()
+        if user:
+            flash("Email already in use")
             return render_template('signup.html', form=form)
         db.session.add(new_user)
         db.session.commit()
