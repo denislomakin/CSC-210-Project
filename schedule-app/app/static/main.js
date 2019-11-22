@@ -1,13 +1,64 @@
 $(function() {
+    let datePicker = new Pikaday({
+        field: $('#datepicker')[0],
+        defaultDate: new Date(),
+        setDefaultDate: true
+    });
+    let startTime = $('#startTime');
+    let endTime = $('#endTime');
     let accountButton = $('#accountButton');
     let sidebar = $('.sidebar');
     let sidebarClose = $('.close');
     let sidebarError = $('.sidebarError');
+    let timepickerConfig = {
+        timeFormat:'h:mm p',
+        interval:15,
+        minTime:'0',
+        maxTime:'11:59pm',
+        defaultTime: '12',
+        dynamic:false,
+        dropdown:true,
+        scrollbar:false,
+        change:function() {
+            let sTime = startTime.val(), eTime = endTime.val();
+            if (stdToMil(sTime) > stdToMil(eTime))
+                if (endTime.val() != sTime)
+                    endTime.val(sTime);
+            if (endTime.attr('minTime') != sTime) {
+                endTime.attr('minTime', sTime);
+                endTime.timepicker('option', 'minTime', sTime);
+            }
+        }
+    }
+    startTime.timepicker(timepickerConfig);
+    endTime.timepicker(timepickerConfig);
     accountButton.click(function() {toggleSidebar(sidebar)});
     sidebarClose.click(function() {toggleSidebar(sidebar)});
     if(sidebarError.children().length > 0)
         sidebar.addClass('open');
 });
+
+function stdToMil(time) {
+    let spl = time.split(' ');
+    let spl2 = spl[0].split(':');
+    let h = spl2[0], m = spl2[1], s = '00';
+    if (spl[1] == 'AM') {
+        if (h == '12') h = '0'
+    } else {
+        if (h != '12') h = String(parseInt(h) + 12)
+    }
+    if (parseInt(h) < 10) h = '0'+h;
+    return h+':'+m+':'+s;
+}
+function milToStd(time) {
+    let spl = time.split(':');
+    let h = parseInt(spl[0]), m = spl[1], s = spl[2], half = 'AM';
+    if (h > 12) {
+        h -= 12;
+        half = 'PM';
+    } else if (h == 0) h = 12;
+    return String(h)+':'+m+':'+s+' '+half;
+}
 
 function toggleSidebar(sidebar) {
     sidebar.animate({width:'toggle'},500);

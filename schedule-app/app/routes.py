@@ -1,3 +1,4 @@
+import random
 from app import app
 from app.forms import LoginForm, SignupForm
 from flask import Flask, render_template, send_from_directory, redirect, url_for, flash
@@ -9,7 +10,6 @@ db = SQLAlchemy(app)
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
-
 
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -28,9 +28,11 @@ def flash_errors(form):
         for error in errors:
             flash(u"Error: %s" % error)
 
+
+eventPlaceholders = ["The Mad Hatter's Tea Party", 'Robanukah', 'Weasel Stomping Day', 'The Red Wedding', 'Scotchtoberfest', 'The Feast of Winter Veil', 'A Candlelit Dinner', 'Towel Day', ]
 @app.route('/')
 def index():
-    return render_template('home.html', user=current_user, lform=LoginForm(), sform=SignupForm())
+    return render_template('home.html', user=current_user, lform=LoginForm(), sform=SignupForm(), eventPlaceholder=random.choice(eventPlaceholders))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -67,6 +69,12 @@ def signup():
     else:
         flash_errors(form)
     return redirect('/')
+
+
+@app.route('/createEvent', methods=['GET', 'POST'])
+def createEvent():
+    return redirect('/')
+
 
 @app.route('/logout')
 @login_required

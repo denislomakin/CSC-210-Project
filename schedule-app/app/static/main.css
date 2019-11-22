@@ -26,13 +26,17 @@ footer {
     background:#5d5d5d;
 }
 .body {
+    display:flex;
+    align-items:center;
+    justify-content:center;
     flex:1;
     background:#F0F0F0;
 }
 .logo {
     display:flex;
     justify-content:center;
-    font-family: 'Montserrat Light';
+    font-family: 'Montserrat';
+    font-weight: lighter;
     font-size: 50pt;
     color:#E04E39;
 }
@@ -53,6 +57,45 @@ footer {
     padding:0 20px 0 0;
     justify-content:flex-end !important;
 }
+#eventUI {
+    display:flex;
+    align-items:center;
+    flex-direction:column;
+    font-size:18pt;
+    width:500px;
+}
+#eventUI input {
+    background:none;
+    border:none;
+    text-align:center;
+	border-bottom: 1px solid gray;
+}
+#eventUI .line {
+	display:flex;
+    align-items:center;
+	justify-content:space-around;
+    border:0;
+    margin-bottom:30px;
+    max-width:300px;
+}
+#eventUI button {
+    width:50%;
+}
+.line.border {
+	border-bottom: 1px solid gray !important;
+}
+.line.border > input {
+    flex-grow:1;
+    max-width:50%;
+    border:none !important;
+}
+.timepicker {
+    width:33%;
+}
+.pika-single {
+    width:258px !important;
+}
+
 .sidebar {
     display:none;
     flex-direction:column;
@@ -92,42 +135,7 @@ footer {
 .sidebarContent form {
     text-align:center;
 }
-/*
-    Button graphics adapted from Emanuel Gonçalves' (https://emanuelgsouza.dev/) work at https://codepen.io/emanuelgsouza/pen/YVJOZo. https://emanuelgsouza.dev/
- */
-.button {
-    position:relative;
-    padding:1em 1.5em;
-    border:none;
-    background-color:transparent;
-    cursor:pointer;
-    outline:none;
-    text-decoration:none;
-    color:black;
-    font-size:18px;
-    margin:1em 0.8em;
-    width:80%;
-}
-.button:after, .button:before {
-    content:'';
-    display:block;
-    position:absolute;
-    top:100%;
-    left:0;
-    width:100%;
-    height:1px;
-    background-color:black;
-    transition:all 0.3s ease;
-    transform:scale(0.85);
-}
-.button:hover:before {
-    top:0;
-    transform:scale(1);
-}
-.button:hover:after {
-    transform:scale(1);
-}
-.line {
+.sidebarContent .line {
 	display:flex;
     align-items:center;
 	justify-content:space-between;
@@ -135,27 +143,47 @@ footer {
     border:0;
 	border-bottom: 1px solid gray;
 }
-label {
+.sidebarContent label {
 	width:25%;
 	display:inline-block;
     text-align:left;
 }
-label[for='remember'] {
+.sidebarContent label[for='remember'] {
     width:90%;
 }
-input {
+.sidebarContent input {
 	width:75%;
 	text-align:right;
 	padding:3px;
     border:0;
 }
+.sidebarContent .check {
+    width:25px;
+    margin-bottom:25px;
+}
+.sidebarContent .sidebarError {
+    background:#E04E39;
+    width:100%;
+    height:auto;
+}
+.sidebarContent .sidebarError > div {
+    color:white;
+    padding:15px;
+    text-align:center;
+}
+.sidebarContent .g-recaptcha {
+    width:100%;
+}
+.sidebarContent .g-recaptcha > div {
+    width:100%;
+}
+
+
 .check {
     width:10%;
     display:block;
     position:relative;
     padding-left:0;
-    margin-bottom:25px;
-    margin-left:96px;
     cursor:pointer;
     font-size:22px;
     -webkit-user-select:none;
@@ -203,21 +231,40 @@ input {
     -ms-transform:rotate(45deg);
     transform:rotate(45deg);
 }
-.sidebarError {
-    background:#E04E39;
-    width:100%;
-    height:auto;
+/*
+    Button graphics adapted from Emanuel Gonçalves' (https://emanuelgsouza.dev/) work at https://codepen.io/emanuelgsouza/pen/YVJOZo. https://emanuelgsouza.dev/
+ */
+.button {
+    position:relative;
+    padding:1em 1.5em;
+    border:none;
+    background-color:transparent;
+    cursor:pointer;
+    outline:none;
+    text-decoration:none;
+    color:black;
+    font-size:18px;
+    margin:1em 0.8em;
+    width:80%;
 }
-.sidebarError > div {
-    color:white;
-    padding:15px;
-    text-align:center;
-}
-.g-recaptcha {
+.button:after, .button:before {
+    content:'';
+    display:block;
+    position:absolute;
+    top:100%;
+    left:0;
     width:100%;
+    height:1px;
+    background-color:black;
+    transition:all 0.3s ease;
+    transform:scale(0.85);
 }
-.g-recaptcha > div {
-    width:100%;
+.button:hover:before {
+    top:0;
+    transform:scale(1);
+}
+.button:hover:after {
+    transform:scale(1);
 }
 .faButton {
     font-size:27pt;

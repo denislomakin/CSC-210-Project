@@ -8,6 +8,12 @@
 <body>
     {% include 'includes/header.html' %}
     <main class='body'>
+        <form id='eventUI' name='event' method='POST' action='{{ url_for("createEvent") }}'>
+            <div class='line'><input placeholder='{{ eventPlaceholder }}' type='text' id='eventName'></div>
+            <div class='line'><input type='text' id='datepicker'></div>
+            <div class='line border'><input type='text' id='startTime'>—<input type='text' id='endTime' minTime=''></div>
+            <button type='submit' class='button'>Create Event</button>
+        </form>
         <div class='sidebar'>
             <div class='close faButton'><i class="fas fa-times"></i></div>
             <div class='sidebarContent'>
