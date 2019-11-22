@@ -25,6 +25,14 @@ If somebody else adds a new dependency, you will need to download that dependenc
 
 ## Known Problems
 
-* None!
+* 'Remember Me' does nothing
+* Attempting to signup with non-unique email leads to raw flask error page
 
-Jamie Huber, Mitchell Jones, Seungmin Kuk, and Denis Lomakin
+
+**Jamie Huber**, Database Engineer
+
+**Mitchell Jones**, Front-End
+
+**Seungmin Kuk**, User Authentication
+
+**Denis Lomakin**, UX/UI
