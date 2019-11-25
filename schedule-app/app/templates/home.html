@@ -8,34 +8,43 @@
 <body>
     {% include 'includes/header.html' %}
     <main class='body'>
-        <form id='eventUI' name='event' method='POST' action='{{ url_for("createEvent") }}'>
-            <div class='line'><input placeholder='{{ eventPlaceholder }}' type='text' id='eventName'></div>
-            <div class='line'><input type='text' id='datepicker'></div>
-            <div class='line border'><input type='text' id='startTime'>—<input type='text' id='endTime' minTime=''></div>
-            <button type='submit' class='button'>Create Event</button>
-        </form>
+        <div id='eventPage' class='page'>
+            <form id='eventUI' name='event' method='POST' action='{{ url_for("createEvent") }}'>
+                <div class='line'><input placeholder='{{ eventPlaceholder }}' type='text' id='eventName'></div>
+                <div class='line'><input type='text' id='datepicker'></div>
+                <div class='line border'><input type='text' id='startTime'>—<input type='text' id='endTime' minTime=''></div>
+                <button type='submit' class='button'>Create Event</button>
+            </form>
+        </div>
+        <div id='schedulePage' class='page hidden'>
+
+        </div>
         <div class='sidebar'>
             <div class='close faButton'><i class="fas fa-times"></i></div>
             <div class='sidebarContent'>
                 <h2>Your Account</h2>
                 {% if user.is_authenticated %}
                     <h2>Welcome, {{ user.username }}</h2>
+                    <a class='pageTurn' target='eventPage'>Create a New Event</a>
+                    <a class='pageTurn' target='psPage'>My Schedule</a>
+                    <h4>My Events</h4>
+                    <a href='/?exampleEventCode'>Example Event</a>
                     <a class='button' href="{{ url_for('logout') }}">Log Out</a>
                 {% else %}
                     <form name='loginForm' method='POST' action='{{ url_for("login") }}'>
                         {{ lform.hidden_tag() }}
-                        <div class="line">{{ lform.username.label }}{{ lform.username() }}</div><br>
-                        <div class="line">{{ lform.password.label }}{{ lform.password() }}</div><br>
-                        <div class="line">{{ lform.remember.label }}<label class='check'>{{ lform.remember() }}<span class='checkmark'></span></label></div><br>
+                        <div class='line'>{{ lform.username.label }}{{ lform.username() }}</div><br>
+                        <div class='line'>{{ lform.password.label }}{{ lform.password() }}</div><br>
+                        <div class='line'>{{ lform.remember.label }}<label class='check'>{{ lform.remember() }}<span class='checkmark'></span></label></div><br>
                         <button class='button fSubmit'>Login</button>
                     </form>
                     <h4>OR</h4>
                     <form name='signupForm' method='POST' action='{{ url_for("signup") }}'>
                         {{ sform.hidden_tag() }}
-                        <div class="line">{{ sform.email.label }}{{ sform.email() }}</div><br>
-                        <div class="line">{{ sform.username.label }}{{ sform.username() }}</div><br>
-                        <div class="line">{{ sform.password.label }}{{ sform.password() }}</div><br>
-                        <div class="line">{{ sform.password2.label }}{{ sform.password2() }}</div><br>
+                        <div class='line'>{{ sform.email.label }}{{ sform.email() }}</div><br>
+                        <div class='line'>{{ sform.username.label }}{{ sform.username() }}</div><br>
+                        <div class='line'>{{ sform.password.label }}{{ sform.password() }}</div><br>
+                        <div class='line'>{{ sform.password2.label }}{{ sform.password2() }}</div><br>
                         {{ sform.recaptcha }}
                         <button class='button fSubmit'>Sign Up</button>
                     </form>
