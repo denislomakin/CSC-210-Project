@@ -1,4 +1,5 @@
 $(function() {
+    let body = $('.body');
     let datePicker = new Pikaday({
         field: $('#datepicker')[0],
         defaultDate: new Date(),
@@ -10,6 +11,7 @@ $(function() {
     let sidebar = $('.sidebar');
     let sidebarClose = $('.close');
     let sidebarError = $('.sidebarError');
+    let pageTurn = $('.pageTurn');
     let timepickerConfig = {
         timeFormat:'h:mm p',
         interval:15,
@@ -36,6 +38,16 @@ $(function() {
     sidebarClose.click(function() {toggleSidebar(sidebar)});
     if(sidebarError.children().length > 0)
         sidebar.addClass('open');
+    pageTurn.prop('href', 'javascript:void(0)');
+    pageTurn.click(function() {
+        let tgtId = $(this).data('target'), tgt = $('#'+tgtId);
+        let curId = body.data('currentpage'), cur = $('#'+curId);
+        if (tgtId == curId)
+            return;
+        cur.addClass('hidden');
+        tgt.removeClass('hidden');
+        body.data('currentpage', tgtId);
+    });
 });
 
 function stdToMil(time) {

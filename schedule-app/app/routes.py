@@ -1,26 +1,9 @@
 import random
-from app import app
+from app import app, db
 from app.forms import LoginForm, SignupForm
+from app.models import User
 from flask import Flask, render_template, send_from_directory, redirect, url_for, flash
-from flask_sqlalchemy import SQLAlchemy
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
-
-db = SQLAlchemy(app)
-login_manager = LoginManager()
-login_manager.init_app(app)
-login_manager.login_view = 'login'
-
-class User(UserMixin, db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), unique=True)
-    email = db.Column(db.String(64))
-    password = db.Column(db.String(128))
-
-
-@login_manager.user_loader
-def load_user(uid):
-    return User.query.get(int(uid))
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 
 
 def flash_errors(form):
@@ -37,13 +20,16 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    if current_user.is_authenticated:
+        return redirect('/')
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
-        if user:
-            if check_password_hash(user.password, form.password.data):
-                login_user(user, remember=form.remember.data)
-                return redirect('/')
+        if user is None or not user.check_password(form.password.data):
+            flash('Wrong Username or Password')
+        else:
+            login_user(user, remember=form.remember.data)
+            return redirect('/')
     else:
         flash('Wrong username or password')
     return redirect('/')
@@ -55,16 +41,18 @@ def scheduler():
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    if current_user.is_authenticated:
+        return redirect('/')
     form = SignupForm()
     if form.validate_on_submit():
-        hashed_password = generate_password_hash(form.password.data, method='sha256')
-        new_user = User(username=form.username.data, email=form.email.data, password=hashed_password)
-        if User.query.filter_by(username=form.username.data).first() is not None:
-            flash('Username taken')
-            return redirect('/')
-        if User.query.filter_by(email=form.email.data).first() is not None:
-            flash('That email is already associated with a MeetUp account.')
-            return redirect('/')
+        new_user = User(username=form.username.data, email=form.email.data)
+        new_user.set_password(form.password.data)
+        # if User.query.filter_by(username=form.username.data).first() is not None:
+        #     flash('Username taken')
+        #     return redirect('/')
+        # if User.query.filter_by(email=form.email.data).first() is not None:
+        #     flash('That email is already associated with a MeetUp account.')
+        #     return redirect('/')
         db.session.add(new_user)
         db.session.commit()
 
