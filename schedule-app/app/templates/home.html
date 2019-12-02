@@ -10,9 +10,9 @@
     <main class='body' data-currentPage='eventPage'>
         <div id='eventPage' class='page'>
             <form id='eventUI' name='event' method='POST' action='{{ url_for("createEvent") }}'>
-                <div class='line'><input placeholder='{{ eventPlaceholder }}' type='text' id='eventName'></div>
+                <div class='line'><input placeholder='{{ eventPlaceholder }}' type='text' name='eventName' id='eventName'></div>
                 <div class='line'><input type='text' id='datepicker'></div>
-                <div class='line border'><input type='text' id='startTime'>—<input type='text' id='endTime' minTime=''></div>
+                <div class='line border'><input type='text' id='startTime' name='startTime'>—<input type='text' id='endTime' name='endTime' minTime=''></div>
                 <button type='submit' class='button'>Create Event</button>
             </form>
         </div>
@@ -208,6 +208,7 @@
                     <a class='pageTurn button' data-target='eventPage'>Create a New Event</a>
                     <a class='pageTurn button' data-target='psPage'>My Schedule</a>
                     <h4>My Events</h4>
+                    <a {{user.</a>
                     <a href='/?exampleEventCode'>Example Event</a>
                     <a class='button' href="{{ url_for('logout') }}">Log Out</a>
                 {% else %}
