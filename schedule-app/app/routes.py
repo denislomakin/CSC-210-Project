@@ -1,9 +1,13 @@
 import random
 from app import app, db
 from app.forms import LoginForm, SignupForm
-from app.models import User
-from flask import Flask, render_template, send_from_directory, redirect, url_for, flash
+from app.models import User,Event
+from flask import Flask, render_template, send_from_directory, redirect, url_for, flash,request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from datetime import date,datetime
+from wtforms.fields.html5 import DateField
+from wtforms.fields.html5 import DateTimeField
+from dateutil import parser
 
 
 def flash_errors(form):
@@ -65,8 +69,26 @@ def signup():
 
 @app.route('/createEvent', methods=['GET', 'POST'])
 def createEvent():
+    name = request.form.get('eventName')
+    new_event=Event(name=name)
+    db.session.add(new_event)
+    db.session.commit()
+    if current_user.is_authenticated:
+       new_event.users.append(current_user)
+       db.session.commit()
+        
+ #    print ("returned tuple: %s " % request.form.get('startTime'))
+ #   startTime =parser.parse(datetime.strptime(request.form.get('startTime'), '%I:%M %p'))
+  
+  #  endTime =parser.parse(datetime.strptime(request.form.get('endTime'), '%I:%M %p'))
+  #  startTime=str(request.form.get('startTime'))
+  #  endTime=str(request.form.get('endTime'))
+    #    form = CreateEventForm()
+    #    if form.validate_on_submit():
+    
+    # kept getting invalid input error when trying to input start time and end time
+    flash('New event has been created!')
     return redirect('/')
-
 
 @app.route('/logout')
 @login_required
