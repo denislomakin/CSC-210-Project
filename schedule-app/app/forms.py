@@ -1,6 +1,6 @@
 from flask import flash, redirect
 from flask_wtf import RecaptchaField, Recaptcha, FlaskForm
-from wtforms import StringField, PasswordField, BooleanField, SubmitField
+from wtforms import StringField, PasswordField, BooleanField, SubmitField, HiddenField
 from wtforms.validators import DataRequired, InputRequired, Email, Length, EqualTo, ValidationError
 from app.models import User
 
@@ -26,3 +26,10 @@ class SignupForm(FlaskForm):
         if User.query.filter_by(email=email.data).first() is not None:
             raise ValidationError('That email is already associated with a MeetUp account.')
             return redirect('/')
+
+
+class EventForm(FlaskForm):
+    eventName = StringField('eventName', validators=[InputRequired(), Length(max=32, message='Event names must not exceed 32 characters.')])
+    dates = HiddenField('dates', validators=[InputRequired()])
+    startTime = StringField('startTime', validators=[InputRequired()])
+    endTime = StringField('endTime', validators=[InputRequired()])

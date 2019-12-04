@@ -10,9 +10,17 @@
     <main class='body' data-currentPage='eventPage'>
         <div id='eventPage' class='page'>
             <form id='eventUI' name='event' method='POST' action='{{ url_for("createEvent") }}'>
-                <div class='line'><input placeholder='{{ eventPlaceholder }}' type='text' name='eventName' id='eventName'></div>
-                <div class='line'><div id='mdp'></div></div>
-                <div class='line border'><input type='text' id='startTime' name='startTime'>—<input type='text' id='endTime' name='endTime' minTime=''></div>
+                {{ eform.hidden_tag() }}
+                <div class='line'>
+                    {{ eform.eventName(placeholder=eventPlaceholder) }}
+                </div>
+                <div class='line'>
+                    {{ eform.dates() }}
+                    <div id='mdp'></div>
+                </div>
+                <div class='line border'>
+                    {{ eform.startTime() }}—{{ eform.endTime(minTime='') }}
+                </div>
                 <button type='submit' class='button'>Create Event</button>
             </form>
         </div>

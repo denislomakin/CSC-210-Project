@@ -98,3 +98,7 @@ function getCookie(name) {
 function eraseCookie(name) {
     document.cookie = name+'=; Max-Age=-99999999;';
 }
+function onMdpChange() {
+    console.log($('#mdp').multiDatesPicker('getDates', 'string'));
+    $('#dates').val($('#mdp').multiDatesPicker('getDates', 'string').toString());
+}

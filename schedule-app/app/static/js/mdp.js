@@ -456,6 +456,9 @@
 					case 'value':
 						ret = exec_result;
 				}
+				if (method == 'toggleDate') {
+					onMdpChange();
+				}
 				return exec_result;
 			} else if( typeof method === 'object' || ! method ) {
 				return methods.init.apply(this, mdp_arguments);
