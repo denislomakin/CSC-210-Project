@@ -54,6 +54,12 @@ class Event(db.Model):
     def __repr__(self):
         return '<Event {}>'.format(self.id)
 
+    def add_times(self, startTime, endTime):
+        self.start = startTime
+        self.end = endTime
+    def set_schedule_id(self, user):
+        self.schedule_id = user
+
 class Times(db.Model):
     __tablename__ = "Times"
     time_id = db.Column(db.Integer, primary_key=True,autoincrement=True)
