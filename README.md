@@ -21,7 +21,7 @@ If somebody else adds a new dependency, you will need to download that dependenc
 * Forgot Password Link (sends an email with reset code)
 * Build Application UI
 * Build Application Back-End
-
+* Send invitation
 
 ## Known Problems
 
