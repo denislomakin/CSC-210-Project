@@ -135,6 +135,16 @@ footer {
     padding:13px 5%;
     flex-grow:1;
 }
+.sidebarContent .account {
+    display:flex;
+    flex-direction:row;
+    align-items:center;
+    height:80px;
+}
+.sidebarContent .account .uname {
+    flex-grow:1;
+    padding:0 15px;
+}
 .sidebarContent h2 {
     font-family:'Montserrat';
     font-size:32px;

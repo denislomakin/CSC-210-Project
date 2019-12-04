@@ -200,11 +200,13 @@
             </table>
         </div>
         <div class='sidebar'>
-            <div class='close faButton'><i class="fas fa-times"></i></div>
             <div class='sidebarContent'>
+                <div class='account'>
+                    <i class='faButton fas fa-user-circle'></i>
+                    <div class='uname'>{% if user.is_authenticated %}{{ user.username }}{% endif %}</div>
+                    <div class='close faButton'><i class="fas fa-times"></i></div>
+                </div>
                 {% if user.is_authenticated %}
-                    <div id='account'><img id='profileImg' src='data:image/jpeg;base64,{{ user.profileImg | safe }}'></div>
-                    <h2>Welcome, {{ user.username }}</h2>
                     <a class='pageTurn button' data-target='eventPage'>Create a New Event</a>
                     <a class='pageTurn button' data-target='psPage'>My Schedule</a>
                     <h4>My Events</h4>
