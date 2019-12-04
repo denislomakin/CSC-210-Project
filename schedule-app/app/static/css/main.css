@@ -23,7 +23,7 @@ body > * {
 footer {
     font-size: 15pt;
     color:white;
-    background:#5d5d5d;
+    background:#1D1C2A;
 }
 .body {
     display:flex;
@@ -84,8 +84,8 @@ footer {
     align-items:center;
 	justify-content:space-around;
     border:0;
-    margin-bottom:30px;
-    max-width:300px;
+    margin-bottom:20px;
+    width:420px;
 }
 #eventUI button {
     width:50%;
@@ -337,4 +337,78 @@ tr {
 
 td {
 	height: 25px;
+}
+#mdp table.ui-datepicker-calendar {
+    table-layout:fixed!important;
+}
+#mdp td {
+    border:none!important;
+}
+#mdp td > a {
+    border:none!important;
+}
+
+#mdp > .ui-widget-content {
+    border:none !important;
+    background:none !important;
+}
+
+#mdp .ui-widget-header {
+    border:none !important;
+    background:none !important;
+}
+
+#mdp .ui-state-highlight {
+}
+
+#mdp .ui-state-highlight a {
+    background:#4285f4 none !important;
+    color:white !important;
+}
+
+#mdp a.ui-state-active {
+    border:none!important;
+    color:#454545;
+}
+
+#mdp a.ui-state-default {
+    background:#fff;
+}
+
+#mdp .ui-widget {
+    font-family:'Roboto' !important;
+    font-weight:normal !important;
+}
+
+#mdp .ui-widget-header {
+    font-weight:normal!important;
+}
+
+#mdp .ui-datepicker th {
+    padding:0 .3em .3em !important;
+    font-weight:normal!important;
+}
+
+#mdp td.ui-state-highlight {
+    background:white;
+}
+#mdp a.ui-state-highlight {
+    color:#454545;
+}
+#mdp .ui-datepicker-header > a {
+    cursor:pointer;
+}
+#mdp .ui-datepicker-header > a.ui-state-hover {
+    border:none!important;
+}
+#mdp .ui-datepicker-header > a.ui-state-hover {
+    background:none!important;
+}
+#mdp .ui-datepicker-header > a.ui-datepicker-next-hover {
+    right:2px!important;
+    top:2px!important;
+}
+#mdp .ui-datepicker-header > a.ui-datepicker-prev-hover {
+    left:2px!important;
+    top:2px!important;
 }

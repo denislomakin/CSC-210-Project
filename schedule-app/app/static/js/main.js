@@ -1,10 +1,6 @@
 $(function() {
     let body = $('.body');
-    let datePicker = new Pikaday({
-        field: $('#datepicker')[0],
-        defaultDate: new Date(),
-        setDefaultDate: true
-    });
+    $('#mdp').multiDatesPicker();
     let startTime = $('#startTime');
     let endTime = $('#endTime');
     let accountButton = $('#accountButton');
