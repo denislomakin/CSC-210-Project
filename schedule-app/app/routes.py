@@ -75,7 +75,15 @@ def createEvent():
     db.session.commit()
     if current_user.is_authenticated:
        new_event.users.append(current_user)
+       new_event.set_schedule_id(current_user.user_id)
        db.session.commit()
+        
+    startTime = datetime.strptime(request.form.get('startTime'), '%I:%M %p')
+    endTime = datetime.strptime(request.form.get('endTime'), '%I:%M %p')
+    
+    if(startTime < endTime):
+        new_event.add_times(startTime, endTime)
+        db.session.commit()
         
  #    print ("returned tuple: %s " % request.form.get('startTime'))
  #   startTime =parser.parse(datetime.strptime(request.form.get('startTime'), '%I:%M %p'))
