@@ -10,10 +10,10 @@ from wtforms.fields.html5 import DateTimeField
 from dateutil import parser
 
 
-def flash_errors(form):
+def flash_errors(form, type):
     for field, errors in form.errors.items():
         for error in errors:
-            flash(u"Error: %s" % error)
+            flash(type+error)
 
 
 eventPlaceholders = ["The Mad Hatter's Tea Party", 'Robanukah', 'Weasel Stomping Day', 'The Red Wedding', 'Scotchtoberfest', 'The Feast of Winter Veil', 'A Candlelit Dinner', 'Towel Day', ]
@@ -30,12 +30,12 @@ def login():
     if form.validate_on_submit():
         user = User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
-            flash('Wrong Username or Password')
+            flash('`Wrong Username or Password')
         else:
             login_user(user, remember=form.remember.data)
             return redirect('/')
     else:
-        flash('Wrong username or password')
+        flash('`Wrong Username or Password')
     return redirect('/')
 
 @app.route('/scheduler', methods=['GET', 'POST'])
@@ -52,10 +52,10 @@ def signup():
         new_user = User(username=form.username.data, email=form.email.data)
         new_user.set_password(form.password.data)
         # if User.query.filter_by(username=form.username.data).first() is not None:
-        #     flash('Username taken')
+        #     flash('`Username taken')
         #     return redirect('/')
         # if User.query.filter_by(email=form.email.data).first() is not None:
-        #     flash('That email is already associated with a MeetUp account.')
+        #     flash('`That email is already associated with a MeetUp account.')
         #     return redirect('/')
         db.session.add(new_user)
         db.session.commit()
@@ -63,7 +63,7 @@ def signup():
         login_user(new_user)
         return redirect('/')
     else:
-        flash_errors(form)
+        flash_errors(form, '`')
     return redirect('/')
 
 
@@ -76,9 +76,9 @@ def createEvent():
             new_event.users.append(current_user)
         db.session.add(new_event)
         db.session.commit()
-        flash('New event has been created!')
+        flash('|New event has been created!')
     else:
-        flash_errors(form)
+        flash_errors(form, '-')
     return redirect('/')
 
 @app.route('/logout')
