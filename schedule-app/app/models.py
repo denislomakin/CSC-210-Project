@@ -39,12 +39,18 @@ class Event(db.Model):
     __tablename__ = "Events"
     event_id = db.Column(db.Integer, primary_key=True,autoincrement=True)
     name = db.Column(db.String(256))
-    start = db.Column(db.String(256))
-    end = db.Column(db.String(256))
+    start = db.Column(db.DateTime())
+    end = db.Column(db.DateTime())
     schedule_id = db.Column(db.Integer, db.ForeignKey("Users.user_id"))
     rel=db.relationship("Times",secondary=relationship2,backref=db.backref("events",lazy='dynamic'))
     def __repr__(self):
         return '<Event {}>'.format(self.id)
+
+    def add_times(self, startTime, endTime):
+        self.start = startTime
+        self.end = endTime
+    def set_schedule_id(self, user):
+        self.schedule_id = user
 
 class Times(db.Model):
     __tablename__ = "Times"
