@@ -1,6 +1,6 @@
 import random
 from app import app, db
-from app.forms import LoginForm, SignupForm, EventForm
+from app.forms import LoginForm, SignupForm, EventForm,RequestResetForm, ResetPasswordForm
 from app.models import User,Event
 from flask import Flask, render_template, send_from_directory, redirect, url_for, flash,request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
@@ -8,6 +8,23 @@ from datetime import date,datetime
 from wtforms.fields.html5 import DateField
 from wtforms.fields.html5 import DateTimeField
 from dateutil import parser
+from werkzeug.security import generate_password_hash, check_password_hash
+import urllib.parse
+import urllib.request
+import json
+import base64
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import lxml.html
+import smtplib
+
+eventPlaceholders = ["The Mad Hatter's Tea Party", 'Robanukah', 'Weasel Stomping Day', 'The Red Wedding', 'Scotchtoberfest', 'The Feast of Winter Veil', 'A Candlelit Dinner', 'Towel Day', ]
+
+GOOGLE_ACCOUNTS_BASE_URL = 'https://accounts.google.com'
+REDIRECT_URI = 'urn:ietf:wg:oauth:2.0:oob'
+GOOGLE_CLIENT_ID = '570974553537-v4mr65mlcjp966q8iq75qkc7g8btusu9.apps.googleusercontent.com'
+GOOGLE_CLIENT_SECRET = 'GpqWDz9qqxg9ncVd_zp_Lrsm'
+GOOGLE_REFRESH_TOKEN = '1//0dUmDbXVDnrOGCgYIARAAGA0SNwF-L9IrVmfXprmu_GxgL8mbwfNPCi5anBdmW7SVmN6w-v0hId-5sBWWPF0ZTiOJ26G2b09uogA'
 
 
 def flash_errors(form, type):
@@ -16,7 +33,53 @@ def flash_errors(form, type):
             flash(type+error)
 
 
-eventPlaceholders = ["The Mad Hatter's Tea Party", 'Robanukah', 'Weasel Stomping Day', 'The Red Wedding', 'Scotchtoberfest', 'The Feast of Winter Veil', 'A Candlelit Dinner', 'Towel Day', ]
+def generate_oauth2_string(username, access_token, as_base64=False):
+    auth_string = 'user=%s\1auth=Bearer %s\1\1' % (username, access_token)
+    if as_base64:
+        auth_string = base64.b64encode(auth_string.encode('ascii')).decode('ascii')
+    return auth_string
+    
+def command_to_url(command):
+    return '%s/%s' % (GOOGLE_ACCOUNTS_BASE_URL, command)
+    
+    
+def call_refresh_token(client_id, client_secret, refresh_token):
+    params = {}
+    params['client_id'] = client_id
+    params['client_secret'] = client_secret
+    params['refresh_token'] = refresh_token
+    params['grant_type'] = 'refresh_token'
+    request_url = command_to_url('o/oauth2/token')
+    response = urllib.request.urlopen(request_url, urllib.parse.urlencode(params).encode('UTF-8')).read().decode('UTF-8')
+    return json.loads(response)
+
+def refresh_authorization(google_client_id, google_client_secret, refresh_token):
+    response = call_refresh_token(google_client_id, google_client_secret, refresh_token)
+    return response['access_token'], response['expires_in']
+    
+    
+def send_mail(fromaddr, toaddr, subject, message):
+
+    access_token, expires_in = refresh_authorization(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REFRESH_TOKEN)
+    auth_string = generate_oauth2_string(fromaddr, access_token, as_base64=True)
+
+    msg = MIMEMultipart('related')
+    msg['Subject'] = subject
+    msg['From'] = fromaddr
+    msg['To'] = toaddr
+    msg.preamble = 'This is a multi-part message in MIME format.'
+    msg_alternative = MIMEMultipart('alternative')
+    msg.attach(msg_alternative)
+    part_text = MIMEText(lxml.html.fromstring(message).text_content().encode('utf-8'), 'plain', _charset='utf-8')
+    part_html = MIMEText(message.encode('utf-8'), 'html', _charset='utf-8')
+    msg_alternative.attach(part_text)
+    msg_alternative.attach(part_html)
+    server = smtplib.SMTP('smtp.gmail.com:587')
+    server.ehlo(GOOGLE_CLIENT_ID)
+    server.starttls()
+    server.docmd('AUTH', 'XOAUTH2 ' + auth_string)
+    server.sendmail(fromaddr, toaddr, msg.as_string())
+    server.quit()
 @app.route('/')
 def index():
     return render_template('home.html', user=current_user, lform=LoginForm(), sform=SignupForm(), eform=EventForm(), eventPlaceholder=random.choice(eventPlaceholders))
@@ -86,3 +149,37 @@ def createEvent():
 def logout():
     logout_user()
     return redirect('/')
+
+
+    
+@app.route("/reset_password", methods=['GET', 'POST'])
+def reset_request():
+    if current_user.is_authenticated:
+        return redirect('/')
+    form = RequestResetForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        token = user.get_reset_token()
+        send_mail('meetupeasyschedule@gmail.com', user.email, 'Reset Password', f'''Click the following link to reset your password:
+        {url_for('reset_token', token=token, _external=True)}
+        ''')
+        flash('An email has been sent with instructions to reset your password.', 'info')
+        return redirect('/login')
+    return render_template('reset_request.html', title='Reset Password', form=form)
+
+@app.route("/reset_password/<token>", methods=['GET', 'POST'])
+def reset_token(token):
+    if current_user.is_authenticated:
+        return redirect('/')
+    user = User.verify_reset_token(token)
+    if user is None:
+        flash('That is an invalid or expired token', 'warning')
+        return redirect(url_for('reset_request'))
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        hashed_password =  generate_password_hash(form.password.data, method='sha256')
+        user.password = hashed_password
+        db.session.commit()
+        flash('Your password has been updated! You are now able to log in', 'success')
+        return redirect(url_for('index'))
+    return render_template('reset_token.html', title='Reset Password', form=form)
