@@ -29,7 +29,7 @@ class SignupForm(FlaskForm):
 
 
 class EventForm(FlaskForm):
-    eventName = StringField('eventName', validators=[InputRequired(), Length(max=32, message='`Event names must not exceed 32 characters.')])
-    dates = HiddenField('dates', validators=[InputRequired()])
-    startTime = StringField('startTime', validators=[InputRequired()])
-    endTime = StringField('endTime', validators=[InputRequired()])
+    eventName = StringField('eventName', validators=[InputRequired(), Length(max=32, message='-Event names must not exceed 32 characters.')])
+    dates = HiddenField('dates', validators=[InputRequired(message='-You must select at least one day for your event.')])
+    startTime = StringField('startTime', validators=[InputRequired(message='-You must select an earliest start time.')])
+    endTime = StringField('endTime', validators=[InputRequired(message='-You must select a latest end time.')])

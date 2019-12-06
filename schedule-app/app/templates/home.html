@@ -7,7 +7,7 @@
 </head>
 <body>
     {% include 'includes/header.html' %}
-    <main class='body' data-currentPage='eventPage'>
+    <main class='body' data-currentPage='{{ startPage }}'>
         <div id='bodyFlash' class='bodyFlash'>
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
@@ -30,21 +30,42 @@
                 {% endif %}
             {% endwith %}
         </div>
-        <div id='eventPage' class='page'>
-            <form id='eventUI' name='event' method='POST' action='{{ url_for("createEvent") }}'>
+        <div id='createEventPage' class='page hidden'>
+            <form class='eventUI' name='event' method='POST' action='{{ url_for("createEvent") }}'>
                 {{ eform.hidden_tag() }}
                 <div class='line'>
                     {{ eform.eventName(placeholder=eventPlaceholder) }}
                 </div>
                 <div class='line'>
                     {{ eform.dates() }}
-                    <div id='mdp'></div>
+                    <div class='mdp' id='mdp'></div>
                 </div>
                 <div class='line border'>
                     {{ eform.startTime() }}—{{ eform.endTime(minTime='') }}
                 </div>
                 <button type='submit' class='button'>Create Event</button>
             </form>
+        </div>
+        <div id='viewEventPage' class='page hidden'>
+            {% if user.is_authenticated %}
+                <div class='col'>
+                    <form class='eventUI'>
+                        <div class='line nb'>
+                            {{ event.name }}
+                        </div>
+                        <div class='line nb'>
+                            {{ event.dates }}
+                            <div class='mdp inactive'></div>
+                        </div>
+                        <div class='line border nb'>
+                            {{ event.start }}—{{ event.end }}
+                        </div>
+                    </form>
+                </div>
+                <div class='col'>
+
+                </div>
+            {% endif %}
         </div>
         <div id='psPage' class='page hidden'>
             <table id="select-times">
@@ -237,7 +258,7 @@
                     <div class='close faButton'><i class="fas fa-times"></i></div>
                 </div>
                 {% if user.is_authenticated %}
-                    <a class='pageTurn button' data-target='eventPage'>Create a New Event</a>
+                    <a class='pageTurn button' data-target='createEventPage'>Create a New Event</a>
                     <a class='pageTurn button' data-target='psPage'>My Schedule</a>
                     <h4>My Events</h4>
                     <a href='/?exampleEventCode'>Example Event</a>

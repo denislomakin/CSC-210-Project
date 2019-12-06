@@ -26,7 +26,7 @@ class User(UserMixin, db.Model):
     email = db.Column(db.String(64), index=True, unique=True)
     password = db.Column(db.String(128))
     schedule=db.relationship("Event", backref="user", lazy=True,uselist=False)
-    rel=db.relationship("Event",secondary=relationships,backref=db.backref("users",lazy='dynamic'))
+    rel=db.relationship("Event", secondary=relationships, backref=db.backref("users",lazy='dynamic'))
 
     def get_id(self):
              return (self.user_id)
@@ -43,13 +43,15 @@ class User(UserMixin, db.Model):
 
 class Event(db.Model):
     __tablename__ = "Events"
-    event_id = db.Column(db.Integer, primary_key=True,autoincrement=True)
+    event_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    creatorId = db.Column(db.Integer);
+    creator = db.Column(db.String(64))
     name = db.Column(db.String(32))
     start = db.Column(db.String(20))
     end = db.Column(db.String(20))
     dates = db.Column(db.String(512))
     schedule_id = db.Column(db.Integer, db.ForeignKey("Users.user_id"))
-    rel=db.relationship("Times",secondary=relationship2,backref=db.backref("events",lazy='dynamic'))
+    rel=db.relationship("Times", secondary=relationship2, backref=db.backref("events", lazy='dynamic'))
 
     def __repr__(self):
         return '<Event {}>'.format(self.id)

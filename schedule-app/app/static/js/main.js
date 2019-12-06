@@ -1,6 +1,7 @@
 $(function() {
     let body = $('.body');
-    $('#mdp').multiDatesPicker();
+    $('.mdp').multiDatesPicker();
+    $('#'+$('.body').data('currentpage')).removeClass('hidden');
     let startTime = $('#startTime');
     let endTime = $('#endTime');
     let accountButton = $('#accountButton');
@@ -99,6 +100,5 @@ function eraseCookie(name) {
     document.cookie = name+'=; Max-Age=-99999999;';
 }
 function onMdpChange() {
-    console.log($('#mdp').multiDatesPicker('getDates', 'string'));
     $('#dates').val($('#mdp').multiDatesPicker('getDates', 'string').toString());
 }

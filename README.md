@@ -16,6 +16,12 @@ If you add new dependencies (pip packages), you will need to update the `require
 
 If somebody else adds a new dependency, you will need to download that dependency to your own virtualenv by running `pip install -r requirements.txt`
 
+#### Upgrading the Database
+1. `flask db migrate`
+2. `flask db upgrade`
+
+Use these two commands to migrate the existing database to one with updated models. These are from the `flask-migrate` package.
+
 ## To-Do List
 
 * Forgot Password Link (sends an email with reset code)

@@ -16,10 +16,23 @@ def flash_errors(form, type):
             flash(type+error)
 
 
-eventPlaceholders = ["The Mad Hatter's Tea Party", 'Robanukah', 'Weasel Stomping Day', 'The Red Wedding', 'Scotchtoberfest', 'The Feast of Winter Veil', 'A Candlelit Dinner', 'Towel Day', ]
+def get_event(eventId):
+    return Event.query.filter_by(event_id=eventId).first()
+
+
+eventPlaceholders = ["The Mad Hatter's Tea Party", 'Robanukah', 'Weasel Stomping Day', 'The Red Wedding', 'Scotchtoberfest', 'The Feast of Winter Veil', 'A Candlelit Dinner', 'Towel Day']
+def render_home(page, event=None):
+    return render_template('home.html', user=current_user, lform=LoginForm(), sform=SignupForm(), eform=EventForm(), eventPlaceholder=random.choice(eventPlaceholders), startPage=page, event=event)
+
+
 @app.route('/')
 def index():
-    return render_template('home.html', user=current_user, lform=LoginForm(), sform=SignupForm(), eform=EventForm(), eventPlaceholder=random.choice(eventPlaceholders))
+    return render_home('createEventPage');
+
+
+@app.route('/<int:eventId>')
+def event():
+    return render_home('viewEventPage', get_event(eventId))
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -67,19 +80,21 @@ def signup():
     return redirect('/')
 
 
+anonymousNames = ['Willy Wonka', 'Darth Vader', 'Mary Poppins', 'John Connor', 'James Bond', 'Bruce Wayne', 'Peter Pan', 'Indiana Jones', 'Han Solo', 'Clark Kent', 'Ferris Bueller', 'Hannah Montana', 'Jon Snow', 'Jay Gatsby', 'Bruce Banner', 'Tony Stark', 'Ellen Ripley', 'Michael Scott', 'Steve Rogers', 'James T. Kirk']
 @app.route('/createEvent', methods=['GET', 'POST'])
 def createEvent():
     form = EventForm()
     if form.validate_on_submit():
-        new_event = Event(name=form.eventName.data, start=form.startTime.data, end=form.endTime.data, dates=form.dates.data)
+        new_event = Event(name=form.eventName.data, start=form.startTime.data, end=form.endTime.data, dates=form.dates.data, creator=(current_user.username if current_user.is_authenticated else random.choice(anonymousNames)), creatorId=(current_user.user_id if current_user.is_authenticated else 0))
         if current_user.is_authenticated:
             new_event.users.append(current_user)
         db.session.add(new_event)
         db.session.commit()
-        flash('|New event has been created!')
+        flash('|'+form.eventName.data+' has been created with ID ' + str(new_event.event_id) + '.')
     else:
         flash_errors(form, '-')
     return redirect('/')
+
 
 @app.route('/logout')
 @login_required
