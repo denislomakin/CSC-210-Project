@@ -1,6 +1,6 @@
 import random
 from app import app, db
-from app.forms import LoginForm, SignupForm, EventForm,RequestResetForm, ResetPasswordForm
+from app.forms import LoginForm, SignupForm, EventForm,RequestResetForm, ResetPasswordForm,InviteToEventForm
 from app.models import User,Event
 from flask import Flask, render_template, send_from_directory, redirect, url_for, flash,request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
@@ -95,7 +95,11 @@ def index():
 
 
 @app.route('/<int:eventId>')
-def event():
+def event(eventId):
+    if current_user.is_authenticated:
+        event=get_event(eventId)
+        event.users.append(current_user)
+        db.session.commit()
     return render_home('viewEventPage', get_event(eventId))
 
 
@@ -158,7 +162,7 @@ def createEvent():
         flash('|'+form.eventName.data+' has been created with ID ' + str(new_event.event_id) + '.')
     else:
         flash_errors(form, '-')
-    return redirect('/')
+    return redirect(url_for('invite',eventId=new_event.event_id))
 
 
 @app.route('/logout')
@@ -167,7 +171,23 @@ def logout():
     logout_user()
     return redirect('/')
 
-
+@app.route("/invite/<int:eventId>",methods=['GET', 'POST'])
+def invite(eventId):
+    
+    form=InviteToEventForm()
+    if form.validate_on_submit():
+        event=get_event(eventId)
+        email=form.email.data
+        send_mail('meetupeasyschedule@gmail.com',email, event.name, f'''You have been invited to {event.name}. Follow url to schedule the event:
+        {url_for('event', eventId=eventId, _external=True)}
+        ''')
+        flash('~Invitation Email Sent.')
+        return redirect('/')
+    else:
+          flash_errors(form, '`')
+    return render_template('invite.html', title='Invite to Event', form=form)
+    
+        
 
 @app.route("/reset_password", methods=['GET', 'POST'])
 def reset_request():
