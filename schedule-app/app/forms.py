@@ -4,10 +4,12 @@ from wtforms import StringField, PasswordField, BooleanField, SubmitField, Hidde
 from wtforms.validators import DataRequired, InputRequired, Email, Length, EqualTo, ValidationError
 from app.models import User
 
+
 class LoginForm(FlaskForm):
     username = StringField('Username', validators=[InputRequired(), Length(min=4, max=64, message="`Username must be between 4 and 64 characters long.")])
     password = PasswordField('Password', validators=[InputRequired(), Length(min=8, max=128, message="`Password must be between 8 and 128 characters long.")])
     remember = BooleanField('Remember Me')
+
 
 
 class SignupForm(FlaskForm):
@@ -33,3 +35,26 @@ class EventForm(FlaskForm):
     dates = HiddenField('dates', validators=[InputRequired(message='-You must select at least one day for your event.')])
     startTime = StringField('startTime', validators=[InputRequired(message='-You must select an earliest start time.')])
     endTime = StringField('endTime', validators=[InputRequired(message='-You must select a latest end time.')])
+    eventName = StringField('eventName', validators=[InputRequired(), Length(max=32, message='`Event names must not exceed 32 characters.')])
+    dates = HiddenField('dates', validators=[InputRequired()])
+    startTime = StringField('startTime', validators=[InputRequired()])
+    endTime = StringField('endTime', validators=[InputRequired()])
+
+class RequestResetForm(FlaskForm):
+    email = StringField('Email',
+                        validators=[DataRequired(), Email()])
+    submit = SubmitField('Request Password Reset')
+
+    def validate_email(self, email):
+        user = User.query.filter_by(email=email.data).first()
+        if user is None:
+            raise ValidationError('There is no account with that email. You must register first.')
+
+
+class ResetPasswordForm(FlaskForm):
+    password = PasswordField('Password', validators=[DataRequired()])
+    confirm_password = PasswordField('Confirm Password',
+                                     validators=[DataRequired(), EqualTo('password')])
+    submit = SubmitField('Reset Password')
+
+
