@@ -162,6 +162,7 @@ def createEvent():
         flash('|'+form.eventName.data+' has been created with ID ' + str(new_event.event_id) + '.')
     else:
         flash_errors(form, '-')
+        return redirect('/')
     return redirect(url_for('invite',eventId=new_event.event_id))
 
 
