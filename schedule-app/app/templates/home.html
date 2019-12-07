@@ -271,8 +271,15 @@
                         <div class='line'>{{ lform.password.label }}{{ lform.password() }}</div><br>
                         <div class='line'>{{ lform.remember.label }}<label class='check'>{{ lform.remember() }}<span class='checkmark'></span></label></div><br>
                         <button class='button fSubmit'>Login</button>
-                        <a href="{{ url_for('reset_request') }}">Forgot Password?</a>
                     </form>
+                    <a id='pwReset'>Forgot Password</a>
+                    <div id='pwrDiv' style='display:none'>
+                        <form method='POST' action='{{ url_for("reset_request") }}'>
+                            {{ pform.hidden_tag() }}
+                            <div class='line'>{{ pform.email.label }}{{ pform.email() }}</div><br>
+                            <button class='button fSubmit'>Request Reset</button>
+                        </form>
+                    </div>
                     <h4>OR</h4>
                     <form name='signupForm' method='POST' action='{{ url_for("signup") }}'>
                         {{ sform.hidden_tag() }}

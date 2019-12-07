@@ -86,7 +86,7 @@ def get_event(eventId):
 
 eventPlaceholders = ["The Mad Hatter's Tea Party", 'Robanukah', 'Weasel Stomping Day', 'The Red Wedding', 'Scotchtoberfest', 'The Feast of Winter Veil', 'A Candlelit Dinner', 'Towel Day']
 def render_home(page, event=None):
-    return render_template('home.html', user=current_user, lform=LoginForm(), sform=SignupForm(), eform=EventForm(), eventPlaceholder=random.choice(eventPlaceholders), startPage=page, event=event)
+    return render_template('home.html', user=current_user, lform=LoginForm(), sform=SignupForm(), eform=EventForm(), pform=RequestResetForm(), eventPlaceholder=random.choice(eventPlaceholders), startPage=page, event=event)
 
 
 @app.route('/')
@@ -180,8 +180,10 @@ def reset_request():
         {url_for('reset_token', token=token, _external=True)}
         ''')
         flash('An email has been sent with instructions to reset your password.', 'info')
-        return redirect('/login')
-    return render_template('reset_request.html', title='Reset Password', form=form)
+        return redirect('/')
+    else:
+        flash_errors(form, '`')
+    return redirect('/')
 
 @app.route("/reset_password/<token>", methods=['GET', 'POST'])
 def reset_token(token):

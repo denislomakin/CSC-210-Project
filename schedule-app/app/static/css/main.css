@@ -171,6 +171,19 @@ footer {
     flex-grow:1;
     padding:0 15px;
 }
+#pwReset {
+    margin:20px 0;
+    text-align:center;
+    text-decoration:none;
+    font-weight:bolder;
+    color:#656565;
+}
+#pwReset:hover{
+    cursor:pointer;
+    text-decoration:none;
+    font-weight:bolder;
+    color:#454545;
+}
 .sidebarContent h2 {
     font-family:'Montserrat';
     font-size:32px;

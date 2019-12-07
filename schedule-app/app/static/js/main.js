@@ -5,6 +5,7 @@ $(function() {
     let startTime = $('#startTime');
     let endTime = $('#endTime');
     let accountButton = $('#accountButton');
+    let pwReset = $('#pwReset');
     let sidebar = $('.sidebar');
     let sidebarClose = $('.close');
     let sidebarError = $('.sidebarError');
@@ -32,6 +33,7 @@ $(function() {
     startTime.timepicker(timepickerConfig);
     endTime.timepicker(timepickerConfig);
     accountButton.click(function() {toggleSidebar(sidebar)});
+    pwReset.click(function() {togglePwr($('#pwrDiv'))});
     sidebarClose.click(function() {toggleSidebar(sidebar)});
     if(sidebarError.children().length > 0)
         sidebar.addClass('open');
@@ -67,6 +69,16 @@ function milToStd(time) {
         half = 'PM';
     } else if (h == 0) h = 12;
     return String(h)+':'+m+':'+s+' '+half;
+}
+
+function togglePwr(pwrDiv) {
+    if (pwrDiv.hasClass('open')) {
+        pwrDiv.slideUp(500);
+        pwrDiv.removeClass('open');
+    } else {
+        pwrDiv.slideDown(500);
+        pwrDiv.addClass('open');
+    }
 }
 
 function toggleSidebar(sidebar) {

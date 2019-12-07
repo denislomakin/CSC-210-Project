@@ -4,7 +4,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 
 relationships=db.Table("users_events",
-            db.Column('id',db.Integer,db.ForeignKey("Users.id")),
+            db.Column('id',db.Integer,db.ForeignKey("Users.user_id")),
             db.Column('event_id',db.Integer,db.ForeignKey("Events.event_id"))
 )
 
@@ -21,15 +21,15 @@ def load_user(uid):
 
 class User(UserMixin, db.Model):
     __tablename__ = "Users"
-    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(64), index=True, unique=True)
     password = db.Column(db.String(128))
-    schedule=db.relationship("Event", backref="user", lazy=True,uselist=False)
-    rel=db.relationship("Event", secondary=relationships, backref=db.backref("users",lazy='dynamic'))
+    schedule = db.relationship("Event", backref="user", lazy=True,uselist=False)
+    rel = db.relationship("Event", secondary=relationships, backref=db.backref("users",lazy='dynamic'))
 
     def get_id(self):
-             return (self.id)
+        return self.user_id
 
     def set_password(self, password):
         self.password = generate_password_hash(password, method='sha256')
@@ -42,16 +42,16 @@ class User(UserMixin, db.Model):
 
     def get_reset_token(self, expires_sec=1800):
         s = Serializer(app.config['SECRET_KEY'], expires_sec)
-        return s.dumps({'id': self.id}).decode('utf-8')
+        return s.dumps({'user_id': self.user_id}).decode('utf-8')
 
     @staticmethod
     def verify_reset_token(token):
         s = Serializer(app.config['SECRET_KEY'])
         try:
-            id = s.loads(token)['id']
+            user_id = s.loads(token)['user_id']
         except:
             return None
-        return User.query.get(id)
+        return User.query.get(user_id)
 
 
 class Event(db.Model):
