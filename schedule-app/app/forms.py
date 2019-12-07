@@ -49,8 +49,12 @@ class RequestResetForm(FlaskForm):
         if user is None:
             raise ValidationError('`There is no account with that email.')
             redirect('/')
-
-
+        
+class InviteToEventForm(FlaskForm):
+    email = StringField('Email',validators=[DataRequired(), Email()])
+    submit = SubmitField('Invite to Event')
+    
+    
 class ResetPasswordForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     confirm_password = PasswordField('Confirm Password',
