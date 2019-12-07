@@ -120,8 +120,8 @@ def login():
     return redirect('/')
 
 @app.route('/scheduler', methods=['GET', 'POST'])
-def scheduler():
-    return render_template('scheduler.html')
+def scheduler(event):
+    return render_template('scheduler.html', schedule=Schedule(event))
 
 
 @app.route('/signup', methods=['GET', 'POST'])
