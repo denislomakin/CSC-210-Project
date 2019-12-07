@@ -232,6 +232,16 @@ footer {
     padding:15px;
     text-align:center;
 }
+.sidebarFlash {
+    background:#39E04E;
+    width:100%;
+    height:auto;
+}
+.sidebarFlash > div {
+    color:#454545;
+    padding:15px;
+    text-align:center;
+}
 .sidebarContent .g-recaptcha {
     width:100%;
 }

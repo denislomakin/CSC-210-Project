@@ -9,6 +9,7 @@ $(function() {
     let sidebar = $('.sidebar');
     let sidebarClose = $('.close');
     let sidebarError = $('.sidebarError');
+    let sidebarFlash = $('.sidebarFlash');
     let pageTurn = $('.pageTurn');
     let timepickerConfig = {
         timeFormat:'h:mm p',
@@ -35,7 +36,7 @@ $(function() {
     accountButton.click(function() {toggleSidebar(sidebar)});
     pwReset.click(function() {togglePwr($('#pwrDiv'))});
     sidebarClose.click(function() {toggleSidebar(sidebar)});
-    if(sidebarError.children().length > 0)
+    if(sidebarError.children().length > 0 || sidebarFlash.children().length > 0)
         sidebar.addClass('open');
     pageTurn.prop('href', 'javascript:void(0)');
     pageTurn.click(function() {

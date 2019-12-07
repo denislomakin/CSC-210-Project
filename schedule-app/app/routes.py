@@ -138,6 +138,7 @@ def signup():
         db.session.commit()
 
         login_user(new_user)
+        flash('~Account ' + form.username.data + ' Created.')
         return redirect('/')
     else:
         flash_errors(form, '`')
@@ -179,7 +180,7 @@ def reset_request():
         send_mail('meetupeasyschedule@gmail.com', user.email, 'Reset Password', f'''Click the following link to reset your password:
         {url_for('reset_token', token=token, _external=True)}
         ''')
-        flash('An email has been sent with instructions to reset your password.', 'info')
+        flash('~Password Reset Email Sent.')
         return redirect('/')
     else:
         flash_errors(form, '`')
