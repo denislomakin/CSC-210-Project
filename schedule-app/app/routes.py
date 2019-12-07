@@ -192,13 +192,13 @@ def reset_token(token):
         return redirect('/')
     user = User.verify_reset_token(token)
     if user is None:
-        flash('That is an invalid or expired token', 'warning')
-        return redirect(url_for('reset_request'))
+        flash('-That is an invalid or expired token')
+        return redirect('/')
+    print(user.username)
     form = ResetPasswordForm()
     if form.validate_on_submit():
-        hashed_password =  generate_password_hash(form.password.data, method='sha256')
-        user.password = hashed_password
+        user.set_password(form.password.data)
         db.session.commit()
-        flash('Your password has been updated! You are now able to log in', 'success')
-        return redirect(url_for('index'))
+        flash('|Your password has been updated.')
+        return redirect('/')
     return render_template('reset_token.html', title='Reset Password', form=form)

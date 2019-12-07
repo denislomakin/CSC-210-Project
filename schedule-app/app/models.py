@@ -48,10 +48,10 @@ class User(UserMixin, db.Model):
     def verify_reset_token(token):
         s = Serializer(app.config['SECRET_KEY'])
         try:
-            user_id = s.loads(token)['user_id']
+            id = s.loads(token)['user_id']
         except:
             return None
-        return User.query.get(user_id)
+        return User.query.get(id)
 
 
 class Event(db.Model):
