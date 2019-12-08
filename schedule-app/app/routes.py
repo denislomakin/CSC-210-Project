@@ -136,6 +136,10 @@ def login():
 
 @app.route('/<int:eventId>/schedule', methods=['GET', 'POST'])
 def scheduler(eventId):
+    if current_user.is_authenticated:
+        event=get_event(eventId)
+        event.users.append(current_user)
+        db.session.commit()
     return render_home('viewEventPage', get_event(eventId))
 
     return render_template('scheduler.html', schedule=Schedule(get_event(eventId)))
