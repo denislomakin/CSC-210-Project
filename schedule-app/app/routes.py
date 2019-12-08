@@ -34,6 +34,11 @@ def flash_errors(form, type):
         for error in errors:
             flash(type+error)
 
+def myEvents(user_id):
+    user=User.query.filter_by(user_id=user_id).first()
+    events=user.rel
+
+    return events
 
 def generate_oauth2_string(username, access_token, as_base64=False):
     auth_string = 'user=%s\1auth=Bearer %s\1\1' % (username, access_token)
@@ -97,6 +102,12 @@ def render_home(page, event=None):
 def index():
     return render_home('createEventPage');
 
+@app.route('/myEvents/<int:user_id>', methods=['GET', 'POST'])
+def myEvents(user_id):
+    user=User.query.filter_by(user_id=user_id).first()
+    events=user.rel
+    
+    return render_template('myEvents.html', title='My Events', myEvents=events)
 
 @app.route('/<int:eventId>')
 def event(eventId):
