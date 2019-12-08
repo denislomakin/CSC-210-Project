@@ -181,13 +181,7 @@ def createEvent():
         flash_errors(form, '-')
         return redirect('/')
     return redirect(url_for('event',eventId=new_event.event_id))
-@app.route('/myEvents/<int:user_id>', methods=['GET', 'POST'])
-def myEvents(user_id):
-    user=User.query.filter_by(user_id=user_id).first()
-    print(user)
-    Events = user.Events
-    print(Events)
-    return redirect('/')
+
 @app.route('/logout')
 @login_required
 def logout():
