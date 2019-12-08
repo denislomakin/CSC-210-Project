@@ -50,15 +50,22 @@
                 <div class='col'>
                     <form class='eventUI'>
                         <div class='line nb'>
-                            {{ event.name }}
+                           Event name:{{ event.name }}
                         </div>
                         <div class='line nb'>
-                            {{ event.dates }}
-                            <div class='mdp inactive'></div>
+                             Dates:{{ event.dates }}
                         </div>
+                        <div class='line nb'>
+                           </div>
+                        <div class='mdp inactive'></div>
                         <div class='line border nb'>
                             {{ event.start }}—{{ event.end }}
                         </div>
+                    {% if event %}
+                      <a class='button' href="{{ url_for('invite',eventId=event.event_id) }}">Invite To Event</a>
+                      <a class='button' href="{{ url_for('scheduler',eventId=event.event_id) }}">Edit possible times</a>
+                     {% endif %}
+                        
                     </form>
                 </div>
                 <div class='col'>
@@ -259,6 +266,7 @@
                     <a class='pageTurn button' data-target='createEventPage'>Create a New Event</a>
                     <a class='pageTurn button' data-target='psPage'>My Schedule</a>
                     <h4>My Events</h4>
+                    
                     <a href='/?exampleEventCode'>Example Event</a>
                     <a class='button' href="{{ url_for('logout') }}">Log Out</a>
                 {% else %}
