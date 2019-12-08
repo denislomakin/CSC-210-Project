@@ -76,8 +76,8 @@
             <table id="select-times">
                 <tr class="days">
                     <td class="day"></td>
-                    {% for day in schedule.days %}
-                        <td class="day">{{ day }}</td>
+                    {% for i in range(schedule.days| length) %}
+                        <td class="day">{{ schedule.days[i] }} {{ schedule.dates[i] }}</td>
                     {% endfor %}
                 {% for time in schedule.times %}
                     <tr>
