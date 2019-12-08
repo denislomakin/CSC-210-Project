@@ -2,10 +2,9 @@ import random
 from app import app, db
 from app.forms import LoginForm, SignupForm, EventForm,RequestResetForm, ResetPasswordForm,InviteToEventForm
 from app.models import User,Event
-from app.scheduler import Schedule
 from flask import Flask, render_template, send_from_directory, redirect, url_for, flash,request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
-from datetime import date,datetime
+from datetime import date,datetime,timedelta
 from wtforms.fields.html5 import DateField
 from wtforms.fields.html5 import DateTimeField
 from dateutil import parser
@@ -18,6 +17,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import lxml.html
 import smtplib
+
 
 eventPlaceholders = ["The Mad Hatter's Tea Party", 'Robanukah', 'Weasel Stomping Day', 'The Red Wedding', 'Scotchtoberfest', 'The Feast of Winter Veil', 'A Candlelit Dinner', 'Towel Day', ]
 
@@ -164,9 +164,14 @@ def createEvent():
     else:
         flash_errors(form, '-')
         return redirect('/')
-    return redirect(url_for('invite',eventId=new_event.event_id))
-
-
+    return redirect(url_for('event',eventId=new_event.event_id))
+@app.route('/myEvents/<int:user_id>', methods=['GET', 'POST'])
+def myEvents(user_id):
+    user=User.query.filter_by(user_id=user_id).first()
+    print(user)
+    Events = user.Events
+    print(Events)
+    return redirect('/')
 @app.route('/logout')
 @login_required
 def logout():
@@ -177,14 +182,14 @@ def logout():
 def invite(eventId):
     
     form=InviteToEventForm()
+    event=get_event(eventId)
     if form.validate_on_submit():
-        event=get_event(eventId)
+        flash('~Invitation Email Sent.')
         email=form.email.data
         send_mail('meetupeasyschedule@gmail.com',email, event.name, f'''You have been invited to {event.name}. Follow url to schedule the event:
-        {url_for('event', eventId=eventId, _external=True)}
+        {url_for('scheduler', eventId=eventId, _external=True)}
         ''')
-        flash('~Invitation Email Sent.')
-        return redirect('/')
+        
     else:
           flash_errors(form, '`')
     return render_template('invite.html', title='Invite to Event', form=form)
@@ -224,3 +229,23 @@ def reset_token(token):
         flash('|Your password has been updated.')
         return redirect('/')
     return render_template('reset_token.html', title='Reset Password', form=form)
+
+
+class Schedule:
+    def __init__(self, event):
+        dates = event.dates.split(",")
+        self.days = [datetime.strftime(date, "%a") for date in (datetime.strptime(date, "%m/%d/%Y") for date in dates)]
+        self.dates = [datetime.strftime(date, "%m/%d") for date in (datetime.strptime(date, "%m/%d/%Y") for date in dates)]
+    
+        start_time_parsed = datetime.strptime(event.start, "%I:%M %p")
+        end_time_parsed = datetime.strptime(event.end, "%I:%M %p")
+
+        self.times = [datetime.strftime(date, "%I:%M %p") for date in
+                             datetime_range(start_time_parsed, end_time_parsed,
+                             timedelta(minutes=15))]
+
+def datetime_range(start, end, delta):
+    current = start
+    while current < end:
+        yield current
+        current += delta
