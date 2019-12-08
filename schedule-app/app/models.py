@@ -2,6 +2,8 @@ from app import db, login_manager,app
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
+import json
+from sqlalchemy.ext import mutable
 
 relationships=db.Table("users_events",
             db.Column('id',db.Integer,db.ForeignKey("Users.user_id")),
@@ -13,6 +15,22 @@ relationship2=db.Table("events_possibletimes",
             db.Column('time_id',db.Integer,db.ForeignKey("Times.time_id"))
 )
 
+class JsonData(db.TypeDecorator):
+    impl = db.Text
+
+    def process_bind_param(self, value, dialect):
+        if value is None:
+            return '{}'
+        else:
+            return json.dumps(value)
+
+    def process_result_value(self, value, dialect):
+        if value is None:
+            return {}
+        else:
+            return json.loads(value)
+
+mutable.MutableDict.associate_with(JsonData)
 
 @login_manager.user_loader
 def load_user(uid):
@@ -63,6 +81,7 @@ class Event(db.Model):
     start = db.Column(db.String(20))
     end = db.Column(db.String(20))
     dates = db.Column(db.String(512))
+    json_obj = db.Column(JsonData)
     schedule_id = db.Column(db.Integer, db.ForeignKey("Users.user_id"))
     rel=db.relationship("Times", secondary=relationship2, backref=db.backref("events", lazy='dynamic'))
 
