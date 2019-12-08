@@ -1,6 +1,9 @@
 $(function() {
     let body = $('.body');
-    $('.mdp').multiDatesPicker();
+    $('.mdp.active').multiDatesPicker();
+    // $('.mdp .inactive').multiDatesPicker({
+    //     addDates: parseDates($('#eventDates').val())
+    // });
     $('#'+$('.body').data('currentpage')).removeClass('hidden');
     let startTime = $('#startTime');
     let endTime = $('#endTime');
@@ -88,6 +91,11 @@ function toggleSidebar(sidebar) {
         sidebar.removeClass('open');
     else
         sidebar.addClass('open');
+}
+
+function parseDates(str) {
+    let arr = str.split(',');
+    console.log(arr);
 }
 
 function setCookie(name,val,exp) {

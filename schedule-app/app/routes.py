@@ -2,6 +2,7 @@ import random
 from app import app, db
 from app.forms import LoginForm, SignupForm, EventForm,RequestResetForm, ResetPasswordForm,InviteToEventForm
 from app.models import User,Event
+from app.scheduler import Schedule
 from flask import Flask, render_template, send_from_directory, redirect, url_for, flash,request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from datetime import date,datetime,timedelta
@@ -81,13 +82,15 @@ def send_mail(fromaddr, toaddr, subject, message):
     server.docmd('AUTH', 'XOAUTH2 ' + auth_string)
     server.sendmail(fromaddr, toaddr, msg.as_string())
     server.quit()
+
+
 def get_event(eventId):
     return Event.query.filter_by(event_id=eventId).first()
 
 
 eventPlaceholders = ["The Mad Hatter's Tea Party", 'Robanukah', 'Weasel Stomping Day', 'The Red Wedding', 'Scotchtoberfest', 'The Feast of Winter Veil', 'A Candlelit Dinner', 'Towel Day']
 def render_home(page, event=None):
-    return render_template('home.html', user=current_user, lform=LoginForm(), sform=SignupForm(), eform=EventForm(), pform=RequestResetForm(), eventPlaceholder=random.choice(eventPlaceholders), startPage=page, event=event)
+    return render_template('home.html', user=current_user, lform=LoginForm(), sform=SignupForm(), eform=EventForm(), pform=RequestResetForm(), iform=InviteToEventForm(), eventPlaceholder=random.choice(eventPlaceholders), startPage=page, event=event, schedule=(None if (event is None) else Schedule(event)))
 
 
 @app.route('/')
@@ -120,8 +123,10 @@ def login():
         flash('`Wrong Username or Password')
     return redirect('/')
 
-@app.route('/scheduler/<int:eventId>', methods=['GET', 'POST'])
+@app.route('/<int:eventId>/schedule', methods=['GET', 'POST'])
 def scheduler(eventId):
+    return render_home('viewEventPage', get_event(eventId))
+
     return render_template('scheduler.html', schedule=Schedule(get_event(eventId)))
 
 
@@ -180,19 +185,19 @@ def logout():
 
 @app.route("/invite/<int:eventId>",methods=['GET', 'POST'])
 def invite(eventId):
-    
-    form=InviteToEventForm()
-    event=get_event(eventId)
+    print('invite')
+    form = InviteToEventForm()
+    event = get_event(eventId)
     if form.validate_on_submit():
-        flash('~Invitation Email Sent.')
-        email=form.email.data
-        send_mail('meetupeasyschedule@gmail.com',email, event.name, f'''You have been invited to {event.name}. Follow url to schedule the event:
-        {url_for('scheduler', eventId=eventId, _external=True)}
-        ''')
-        
+        flash('|Invitation Email Sent.')
+        email = form.email.data
+        send_mail('meetupeasyschedule@gmail.com',
+                  email,
+                  event.name,
+                  f'''You have been invited to {event.name}. Follow url to schedule the event:{url_for('scheduler', eventId=eventId, _external=True)}''')
     else:
-          flash_errors(form, '`')
-    return render_template('invite.html', title='Invite to Event', form=form)
+        flash_errors(form, '`')
+    return redirect('/');
     
         
 
@@ -230,19 +235,6 @@ def reset_token(token):
         return redirect('/')
     return render_template('reset_token.html', title='Reset Password', form=form)
 
-
-class Schedule:
-    def __init__(self, event):
-        dates = event.dates.split(",")
-        self.days = [datetime.strftime(date, "%a") for date in (datetime.strptime(date, "%m/%d/%Y") for date in dates)]
-        self.dates = [datetime.strftime(date, "%m/%d") for date in (datetime.strptime(date, "%m/%d/%Y") for date in dates)]
-    
-        start_time_parsed = datetime.strptime(event.start, "%I:%M %p")
-        end_time_parsed = datetime.strptime(event.end, "%I:%M %p")
-
-        self.times = [datetime.strftime(date, "%I:%M %p") for date in
-                             datetime_range(start_time_parsed, end_time_parsed,
-                             timedelta(minutes=15))]
 
 def datetime_range(start, end, delta):
     current = start
