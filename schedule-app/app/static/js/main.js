@@ -1,9 +1,9 @@
 $(function() {
     let body = $('.body');
     $('.mdp.active').multiDatesPicker();
-    // $('.mdp .inactive').multiDatesPicker({
-    //     addDates: parseDates($('#eventDates').val())
-    // });
+    $('.mdp.inactive').multiDatesPicker({
+        addDates: parseDates($('#eventDates').val())
+    });
     $('#'+$('.body').data('currentpage')).removeClass('hidden');
     let startTime = $('#startTime');
     let endTime = $('#endTime');
@@ -95,7 +95,9 @@ function toggleSidebar(sidebar) {
 
 function parseDates(str) {
     let arr = str.split(',');
+    arr.forEach(function(e, i) {arr[i] = new Date(e)});
     console.log(arr);
+    return arr;
 }
 
 function setCookie(name,val,exp) {

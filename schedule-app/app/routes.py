@@ -185,7 +185,6 @@ def logout():
 
 @app.route("/invite/<int:eventId>",methods=['GET', 'POST'])
 def invite(eventId):
-    print('invite')
     form = InviteToEventForm()
     event = get_event(eventId)
     if form.validate_on_submit():
@@ -196,8 +195,8 @@ def invite(eventId):
                   event.name,
                   f'''You have been invited to {event.name}. Follow url to schedule the event:{url_for('scheduler', eventId=eventId, _external=True)}''')
     else:
-        flash_errors(form, '`')
-    return redirect('/');
+        flash_errors(form, '-')
+    return render_home('viewEventPage', event)
     
         
 

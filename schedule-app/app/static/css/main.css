@@ -66,8 +66,21 @@ footer {
     align-items:center;
     justify-content:center;
 }
+#viewEventPage {
+    align-items:stretch !important;
+}
 .page > .col {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
     width:50%;
+}
+.col.br {
+    border-right:solid #ccc 1px;
+}
+.col.lb {
+    background:#fbfbfb;
 }
 .page.hidden {
     display:none;

@@ -429,6 +429,8 @@
 			}
 			
 			if(methods[method]) {
+				if (method == 'toggleDate' && ret.hasClass('inactive'))
+					return;
 				var exec_result = methods[method].apply(this, Array.prototype.slice.call(mdp_arguments, 1));
 				switch(method) {
 					case 'removeDates':
