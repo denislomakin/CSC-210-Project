@@ -2,6 +2,7 @@ import random
 from app import app, db
 from app.forms import LoginForm, SignupForm, EventForm,RequestResetForm, ResetPasswordForm,InviteToEventForm
 from app.models import User,Event
+from app.scheduler import Schedule
 from flask import Flask, render_template, send_from_directory, redirect, url_for, flash,request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from datetime import date,datetime
@@ -119,9 +120,9 @@ def login():
         flash('`Wrong Username or Password')
     return redirect('/')
 
-@app.route('/scheduler', methods=['GET', 'POST'])
-def scheduler(event):
-    return render_template('scheduler.html', schedule=Schedule(event))
+@app.route('/scheduler/<int:eventId>', methods=['GET', 'POST'])
+def scheduler(eventId):
+    return render_template('scheduler.html', schedule=Schedule(get_event(eventId)))
 
 
 @app.route('/signup', methods=['GET', 'POST'])
