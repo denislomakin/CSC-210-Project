@@ -95,19 +95,15 @@ def get_event(eventId):
 
 eventPlaceholders = ["The Mad Hatter's Tea Party", 'Robanukah', 'Weasel Stomping Day', 'The Red Wedding', 'Scotchtoberfest', 'The Feast of Winter Veil', 'A Candlelit Dinner', 'Towel Day']
 def render_home(page, event=None):
-    return render_template('home.html', user=current_user, lform=LoginForm(), sform=SignupForm(), eform=EventForm(), pform=RequestResetForm(), iform=InviteToEventForm(), aform=ScheduleForm(), eventPlaceholder=random.choice(eventPlaceholders), startPage=page, event=event, schedule=(None if (event is None) else Schedule(event)))
+    if current_user.is_authenticated:
+        events = current_user.rel
+    return render_template('home.html', user=current_user, lform=LoginForm(), sform=SignupForm(), eform=EventForm(), pform=RequestResetForm(), iform=InviteToEventForm(), aform=ScheduleForm(), eventPlaceholder=random.choice(eventPlaceholders), startPage=page, event=event, schedule=(None if (event is None) else Schedule(event)), userEvents=(current_user.rel if current_user.is_authenticated else None))
 
 
 @app.route('/')
 def index():
     return render_home('createEventPage');
 
-@app.route('/myEvents/<int:user_id>', methods=['GET', 'POST'])
-def myEvents(user_id):
-    user=User.query.filter_by(user_id=user_id).first()
-    events=user.rel
-
-    return render_template('myEvents.html', title='My Events', myEvents=events)
 
 @app.route('/<int:eventId>')
 def event(eventId):
@@ -184,7 +180,7 @@ def createEvent():
     else:
         flash_errors(form, '-')
         return redirect('/')
-    return render_home('viewEventPage', new_event)
+    return redirect('/'+str(new_event.event_id))
 
 @app.route('/setSchedule', methods=['GET', 'POST'])
 def setSchedule():

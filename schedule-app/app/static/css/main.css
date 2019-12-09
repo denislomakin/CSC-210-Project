@@ -187,17 +187,21 @@ footer {
     flex-grow:1;
     padding:0 15px;
 }
-#pwReset {
-    margin:20px 0;
+.sidebarContent h3 {
+    font-weight:normal;
     text-align:center;
+}
+#pwReset {
+    text-align: center;
+}
+.sl {
+    margin:10px 2em;
     text-decoration:none;
     font-weight:bolder;
     color:#656565;
 }
-#pwReset:hover{
+.sl:hover {
     cursor:pointer;
-    text-decoration:none;
-    font-weight:bolder;
     color:#454545;
 }
 .sidebarContent h2 {

@@ -104,9 +104,12 @@
                     <div class='close faButton'><i class="fas fa-times"></i></div>
                 </div>
                 {% if user.is_authenticated %}
-                    <a class='pageTurn button' data-target='createEventPage'>Create a New Event</a>
                     <a class='pageTurn button' data-target='psPage'>My Schedule</a>
-                    <a class='button' href="{{ url_for('myEvents',user_id=user.user_id) }}"> View my Events</a>
+                    <h3>Events</h3>
+                    {% for Event in userEvents%}
+                        <a class='eventLink sl' href="{{ url_for('event', eventId=Event.event_id) }}">{{Event.name}}</a>
+                    {% endfor %}
+                    <a class='pageTurn button' data-target='createEventPage'>Create a New Event</a>
                     <a class='button' href="{{ url_for('logout') }}">Log Out</a>
                 {% else %}
                     <h2>Your Account</h2>
@@ -117,7 +120,7 @@
                         <div class='line'>{{ lform.remember.label }}<label class='check'>{{ lform.remember() }}<span class='checkmark'></span></label></div><br>
                         <button class='button fSubmit'>Login</button>
                     </form>
-                    <a id='pwReset'>Forgot Password</a>
+                    <a id='pwReset' class='sl'>Forgot Password</a>
                     <div id='pwrDiv' style='display:none'>
                         <form method='POST' action='{{ url_for("reset_request") }}'>
                             {{ pform.hidden_tag() }}
