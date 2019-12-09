@@ -34,12 +34,6 @@ def flash_errors(form, type):
         for error in errors:
             flash(type+error)
 
-def myEvents(user_id):
-    user=User.query.filter_by(user_id=user_id).first()
-    events=user.rel
-
-    return events
-
 def generate_oauth2_string(username, access_token, as_base64=False):
     auth_string = 'user=%s\1auth=Bearer %s\1\1' % (username, access_token)
     if as_base64:
@@ -130,17 +124,6 @@ def login():
         flash('`Wrong Username or Password')
     return redirect('/')
 
-@app.route('/<int:eventId>/schedule', methods=['GET', 'POST'])
-def scheduler(eventId):
-    if current_user.is_authenticated:
-        event=get_event(eventId)
-        event.users.append(current_user)
-        db.session.commit()
-    return render_home('viewEventPage', get_event(eventId))
-
-    return render_template('scheduler.html', schedule=Schedule(get_event(eventId)))
-
-
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if current_user.is_authenticated:
@@ -191,13 +174,6 @@ def setSchedule():
         flash_errors(form, '-')
     return redirect('/')
 
-# @app.route('/myEvents/<int:user_id>', methods=['GET', 'POST'])
-# def myEvents(user_id):
-#     user=User.query.filter_by(user_id=user_id).first()
-#     print(user)
-#     Events = user.Events
-#     print(Events)
-#     return redirect('/')
 @app.route('/logout')
 @login_required
 def logout():
@@ -217,9 +193,8 @@ def invite(eventId):
                   f'''You have been invited to {event.name}. Follow url to schedule the event:{url_for('scheduler', eventId=eventId, _external=True)}''')
     else:
         flash_errors(form, '-')
-    return render_home('viewEventPage', event)
-    
-        
+    return redirect('/'+str(event.event_id))
+
 
 @app.route("/reset_password", methods=['GET', 'POST'])
 def reset_request():
@@ -254,10 +229,3 @@ def reset_token(token):
         flash('|Your password has been updated.')
         return redirect('/')
     return render_template('reset_token.html', title='Reset Password', form=form)
-
-
-def datetime_range(start, end, delta):
-    current = start
-    while current < end:
-        yield current
-        current += delta
