@@ -193,7 +193,7 @@ def setSchedule():
         print(form.availability.data)
     else:
         flash_errors(form, '-')
-        return redirect
+    return redirect('/')
 
 # @app.route('/myEvents/<int:user_id>', methods=['GET', 'POST'])
 # def myEvents(user_id):

@@ -66,6 +66,9 @@ footer {
     align-items:center;
     justify-content:center;
 }
+#editEventSchedulePage {
+    flex-direction:column;
+}
 #viewEventPage {
     align-items:stretch !important;
 }

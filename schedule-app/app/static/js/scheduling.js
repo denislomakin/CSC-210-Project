@@ -58,10 +58,19 @@ window.onload = function() {
 		} 
 	})
 	window.addEventListener('beforeunload', unloadHandler);
+	$('#esSubmit').click(function(e) {
+	    e.preventDefault();
+	    calculateSchedule();
+	    $('#availability').val(JSON.stringify(availability));
+	    $('#eSchedule').submit();
+    })
 }
 
-function submit() {
+function calculateSchedule() {
 	document.querySelectorAll('#select-times td').forEach( e => {
-		availability[e.id] = (e.className == "selected");
-	})
+	    if (e.className === "not-selected" || e.className === "selected")
+		    availability[e.id] = (e.className == "selected");
+	});
 }
+
+
