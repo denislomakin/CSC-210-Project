@@ -76,8 +76,8 @@
             <table id="select-times">
                 <tr class="days">
                     <td class="day"></td>
-                    {% for day in schedule.days %}
-                        <td class="day">{{ day }}</td>
+                    {% for i in range(schedule.days| length) %}
+                        <td class="day">{{ schedule.days[i] }} {{ schedule.dates[i] }}</td>
                     {% endfor %}
                 {% for time in schedule.times %}
                     <tr>
@@ -106,9 +106,7 @@
                 {% if user.is_authenticated %}
                     <a class='pageTurn button' data-target='createEventPage'>Create a New Event</a>
                     <a class='pageTurn button' data-target='psPage'>My Schedule</a>
-                    <h4>My Events</h4>
-                    
-                    <a href='/?exampleEventCode'>Example Event</a>
+                    <a class='button' href="{{ url_for('myEvents',user_id=user.user_id) }}"> View my Events</a>
                     <a class='button' href="{{ url_for('logout') }}">Log Out</a>
                 {% else %}
                     <h2>Your Account</h2>
