@@ -9,9 +9,9 @@ $(document).mouseup(function(e){
 
 function clickHandler(e) {
 	if (e.target.className === "not-selected") {
-			e.target.className = "selected";
+		e.target.className = "selected";
 	} else if (e.target.className === "selected") {
-			e.target.className = "not-selected";
+		e.target.className = "not-selected";
 	}
 }
 
@@ -43,7 +43,7 @@ function unloadHandler(e) {
 			e.removeEventListener("touchmove", moveHandler);
 			e.removeEventListener("touchstart", downHandler);
 		} 
-	})
+	});
 }
 
 window.onload = function() {
@@ -62,10 +62,6 @@ window.onload = function() {
 
 function submit() {
 	document.querySelectorAll('#select-times td').forEach( e => {
-		if (e.className === "selected") {
-			availability[e.id] = true;
-		} else {
-			availability[e.id] = false;
-		}
+		availability[e.id] = (e.className == "selected");
 	})
 }

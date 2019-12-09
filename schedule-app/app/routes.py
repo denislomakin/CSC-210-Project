@@ -1,6 +1,6 @@
 import random
 from app import app, db
-from app.forms import LoginForm, SignupForm, EventForm,RequestResetForm, ResetPasswordForm,InviteToEventForm
+from app.forms import LoginForm, SignupForm, EventForm,RequestResetForm, ResetPasswordForm, InviteToEventForm, ScheduleForm
 from app.models import User,Event
 from app.scheduler import Schedule
 from flask import Flask, render_template, send_from_directory, redirect, url_for, flash,request
@@ -90,7 +90,7 @@ def get_event(eventId):
 
 eventPlaceholders = ["The Mad Hatter's Tea Party", 'Robanukah', 'Weasel Stomping Day', 'The Red Wedding', 'Scotchtoberfest', 'The Feast of Winter Veil', 'A Candlelit Dinner', 'Towel Day']
 def render_home(page, event=None):
-    return render_template('home.html', user=current_user, lform=LoginForm(), sform=SignupForm(), eform=EventForm(), pform=RequestResetForm(), iform=InviteToEventForm(), eventPlaceholder=random.choice(eventPlaceholders), startPage=page, event=event, schedule=(None if (event is None) else Schedule(event)))
+    return render_template('home.html', user=current_user, lform=LoginForm(), sform=SignupForm(), eform=EventForm(), pform=RequestResetForm(), iform=InviteToEventForm(), aform=ScheduleForm eventPlaceholder=random.choice(eventPlaceholders), startPage=page, event=event, schedule=(None if (event is None) else Schedule(event)))
 
 
 @app.route('/')
@@ -169,7 +169,17 @@ def createEvent():
     else:
         flash_errors(form, '-')
         return redirect('/')
-    return redirect(url_for('event',eventId=new_event.event_id))
+    return render_home('viewEventPage', new_event)
+
+@app.route('/setSchedule', methods=['GET', 'POST'])
+def submitSchedule():
+    form = ScheduleForm()
+    if form.validate_on_submit():
+        print(form.availability.data)
+    else:
+        flash_errors(form, '-')
+        return redirect
+
 @app.route('/myEvents/<int:user_id>', methods=['GET', 'POST'])
 def myEvents(user_id):
     user=User.query.filter_by(user_id=user_id).first()

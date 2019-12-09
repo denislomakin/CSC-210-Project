@@ -88,6 +88,11 @@
                     </tr>
                 {% endfor %}
             </table>
+            <form name='schedule' method='POST' action='{{ url_for("setSchedule") }}'>
+                {{ aform.hidden_tag() }}
+                {{ aform.availability() }}
+                <button type='submit' class='button'>Set Schedule</button>
+            </form>
         </div>
         <div id='psPage' class='page hidden'>
         </div>

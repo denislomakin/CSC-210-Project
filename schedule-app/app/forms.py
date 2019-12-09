@@ -11,7 +11,6 @@ class LoginForm(FlaskForm):
     remember = BooleanField('Remember Me')
 
 
-
 class SignupForm(FlaskForm):
     email = StringField('Email', validators=[InputRequired(), Email(message='Invalid email'), Length(max=64, message="`Email must be less than 64 characters.")])
     username = StringField('Username', validators=[InputRequired(), Length(min=4, max=64, message="`Username must be between 4 and 64 characters long.")])
@@ -40,6 +39,7 @@ class EventForm(FlaskForm):
     startTime = StringField('startTime', validators=[InputRequired()])
     endTime = StringField('endTime', validators=[InputRequired()])
 
+
 class RequestResetForm(FlaskForm):
     email = StringField('Email',validators=[DataRequired(), Email()])
     submit = SubmitField('Request Password Reset')
@@ -49,7 +49,12 @@ class RequestResetForm(FlaskForm):
         if user is None:
             raise ValidationError('`There is no account with that email.')
             redirect('/')
-        
+
+
+class ScheduleForm(FlaskForm):
+    availability = HiddenField('availability', validators=[DataRequired()])
+
+
 class InviteToEventForm(FlaskForm):
     email = StringField('Email',validators=[DataRequired(), Email()])
     submit = SubmitField('Invite to Event')
