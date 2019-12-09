@@ -165,11 +165,12 @@ def createEvent():
         return redirect('/')
     return redirect('/'+str(new_event.event_id))
 
+
 @app.route('/setSchedule', methods=['GET', 'POST'])
 def setSchedule():
     form = ScheduleForm()
     if form.validate_on_submit():
-        print(form.availability.data)
+        print(json.loads(form.availability.data))
     else:
         flash_errors(form, '-')
     return redirect('/')
@@ -221,7 +222,6 @@ def reset_token(token):
     if user is None:
         flash('-That is an invalid or expired token')
         return redirect('/')
-    print(user.username)
     form = ResetPasswordForm()
     if form.validate_on_submit():
         user.set_password(form.password.data)
