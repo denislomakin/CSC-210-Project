@@ -98,17 +98,17 @@
                     </div>
 {#                    <td class="day">{{ schedule.days[i] }} {{ schedule.dates[i] }}</td>#}
                 {% endfor %}
-                <form id='eSchedule' name='schedule' method='POST' action='{{ url_for("setSchedule", eventId=event.event_id) }}'>
-                    {{ aform.hidden_tag() }}
-                    {{ aform.availability() }}
-                    {% if current_user.is_authenticated %}
-                        {{ aform.user_name(type='hidden', value=current_user.username) }}
-                    {% else %}
-                        <div class='line'>{{ aform.user_name.label }}{{ aform.user_name() }}</div><br>
-                    {% endif %}
-                    <button id='esSubmit' type='submit' class='button'>Set Schedule</button>
-                </form>
             </div>
+            <form id='eSchedule' name='schedule' method='POST' action='{{ url_for("setSchedule", eventId=event.event_id) }}'>
+                {{ aform.hidden_tag() }}
+                {{ aform.availability() }}
+                {% if current_user.is_authenticated %}
+                    {{ aform.user_name(type='hidden', value=current_user.username) }}
+                {% else %}
+                    <div class='line'>{{ aform.user_name.label }}{{ aform.user_name() }}</div><br>
+                {% endif %}
+                <button id='esSubmit' type='submit' class='button'>Set Schedule</button>
+            </form>
         </div>
         <div id='psPage' class='page hidden'>
             <div class='tableContainer'>
