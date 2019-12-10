@@ -73,22 +73,16 @@
             </form>
         </div>
         <div id='editEventSchedulePage' class='page hidden'>
-            <div class='tableContainer'>
-                <table class='select-times' id='select-times'>
-                    <tr class="days">
-                        <td class="day"></td>
-                        {% for i in range(schedule.days| length) %}
-                            <td class="day">{{ schedule.days[i] }} {{ schedule.dates[i] }}</td>
+            <div class='tableContainer select-times'>
+                {% for date in schedule.dates %}
+                    <div class='dayCol'>
+                        <div class='dayTitle'>{{ schedule.days[i] }}{{ date }}</div>
+                        {% for time in schedule.times %}
+                            <div id='{{ date ~ " " ~ time }}' class='timeRow selected'>{{ time }}</div>
                         {% endfor %}
-                    {% for time in schedule.times %}
-                        <tr>
-                            <td class="time">{{ time }}</td>
-                            {% for date in schedule.dates %}
-                                <td id="{{ date ~ ' ' ~ time }}" class="selected"></td>
-                            {% endfor %}
-                        </tr>
-                    {% endfor %}
-                </table>
+                    </div>
+{#                    <td class="day">{{ schedule.days[i] }} {{ schedule.dates[i] }}</td>#}
+                {% endfor %}
                 <form id='eSchedule' name='schedule' method='POST' action='{{ url_for("setSchedule", eventId=event.event_id) }}'>
                     {{ aform.hidden_tag() }}
                     {{ aform.availability() }}
@@ -103,21 +97,6 @@
         </div>
         <div id='psPage' class='page hidden'>
             <div class='tableContainer'>
-                <table class='select-times' id='personal-select-times'>
-                <tr class="days">
-                    <td class="day"></td>
-                    {% for i in range(schedule.days| length) %}
-                        <td class="day">{{ schedule.days[i] }} {{ schedule.dates[i] }}</td>
-                    {% endfor %}
-                    {% for time in schedule.times %}
-                        <tr>
-                            <td class="time">{{ time }}</td>
-                            {% for date in schedule.dates %}
-                                <td id="{{ date ~ ' ' ~ time }}" class="selected"></td>
-                            {% endfor %}
-                        </tr>
-                    {% endfor %}
-                </table>
 {#            <form id='' name='personalSchedule' method='POST' action='{{  }}'>#}
 {#                <button id='esSubmit' type='submit' class='button'>Set Schedule</button>#}
 {#            </form>#}
