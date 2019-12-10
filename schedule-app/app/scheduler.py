@@ -35,7 +35,7 @@ def create_overlap(schedule, avail_arr):
 
 		full_avail = Color("#5f7eed")
 		no_avail = Color("#f0f0f0")
-		colors = list(no_avail.range_to(full_avail, avail_max))
+		colors = list(no_avail.range_to(full_avail, avail_max+1))
 
 		color_dict = {}
 		for id1 in id_list:
