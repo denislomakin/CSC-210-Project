@@ -51,6 +51,7 @@ $(function() {
         tgt.removeClass('hidden');
         body.data('currentpage', tgtId);
     });
+    $('body link').css('display', 'none')
 });
 
 function stdToMil(time) {
