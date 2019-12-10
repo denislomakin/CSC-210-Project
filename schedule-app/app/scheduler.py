@@ -39,7 +39,7 @@ def create_overlap(schedule, avail_arr):
 
 		color_dict = {}
 		for id1 in id_list:
-			color_dict[id1] = colors[overall_avail[id1]]
+			color_dict[id1] = colors[overall_avail[id1]].hex
 
 		return color_dict
 
