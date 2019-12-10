@@ -99,6 +99,7 @@
 {#                    <td class="day">{{ schedule.days[i] }} {{ schedule.dates[i] }}</td>#}
                 {% endfor %}
             </div>
+			{% if event %}
             <form id='eSchedule' name='schedule' method='POST' action='{{ url_for("setSchedule", eventId=event.event_id) }}'>
                 {{ aform.hidden_tag() }}
                 {{ aform.availability() }}
@@ -109,6 +110,7 @@
                 {% endif %}
                 <button id='esSubmit' type='submit' class='button'>Set Schedule</button>
             </form>
+			{% endif %}
         </div>
         <div id='psPage' class='page hidden'>
             <div class='tableContainer'>
