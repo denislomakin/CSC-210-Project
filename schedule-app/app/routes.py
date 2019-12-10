@@ -168,7 +168,7 @@ def createEvent():
     return redirect('/'+str(new_event.event_id))
 
 
-@app.route('/setSchedule', methods=['GET', 'POST'])
+@app.route('/setSchedule/<int:eventId>', methods=['GET', 'POST'])
 def setSchedule(eventId):
     form = ScheduleForm()
     event = get_event(eventId)
