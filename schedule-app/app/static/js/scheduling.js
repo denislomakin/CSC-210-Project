@@ -8,55 +8,58 @@ $(document).mouseup(function(e){
 });
 
 function clickHandler(e) {
-	if (e.target.className === "not-selected") {
-		e.target.className = "selected";
-	} else if (e.target.className === "selected") {
-		e.target.className = "not-selected";
+	let jq = $(e.target);
+	if (jq.hasClass('not-selected')) {
+		jq.removeClass('not-selected');
+		jq.addClass('selected');
+	} else if (jq.hasClass('selected')) {
+		jq.removeClass('selected');
+		jq.addClass('not-selected');
 	}
 }
 
 function moveHandler(e) {
+	let jq = $(e.target);
 	e.preventDefault()
 	if (draggedSelect) {
-		e.target.className = "selected";
+		jq.addClass('selected');
+		jq.removeClass('not-selected');
 	} else if (draggedUnselect) {
-		e.target.className = "not-selected";
+		jq.addClass('not-selected');
+		jq.removeClass('selected');
 	}
 }
 
 function downHandler(e) {
+	let jq = $(e.target);
 	e.preventDefault()
-	if (e.target.className === "not-selected") {
+	if (jq.hasClass('not-selected')) {
 			draggedSelect = true;
-	} else if (e.target.className === "selected") {
+	} else if (jq.hasClass('selected')) {
 			draggedUnselect = true;
 	}
 }
 
 function unloadHandler(e) {
-	document.querySelectorAll('#select-times td').forEach(e => {
-		if (e.className === "not-selected" || e.className === "selected") {
-			e.removeEventListener("click", clickHandler);
-			e.removeEventListener("mousemove", moveHandler);
-			e.removeEventListener("mousedown", downHandler);
-			e.removeEventListener("touch", clickHandler);
-			e.removeEventListener("touchmove", moveHandler);
-			e.removeEventListener("touchstart", downHandler);
-		} 
+	document.querySelectorAll('.select-times .timeRow').forEach(e => {
+		e.removeEventListener("click", clickHandler);
+		e.removeEventListener("mousemove", moveHandler);
+		e.removeEventListener("mousedown", downHandler);
+		e.removeEventListener("touch", clickHandler);
+		e.removeEventListener("touchmove", moveHandler);
+		e.removeEventListener("touchstart", downHandler);
 	});
 }
 
 window.onload = function() {
-	document.querySelectorAll('#select-times td').forEach(e => {
-		if (e.className === "not-selected" || e.className === "selected") {
-			e.addEventListener("click", clickHandler);
-			e.addEventListener("mousemove", moveHandler);
-			e.addEventListener("mousedown", downHandler);
-			e.addEventListener("touch", clickHandler);
-			e.addEventListener("touchmove", moveHandler);
-			e.addEventListener("touchstart", downHandler);
-		} 
-	})
+	document.querySelectorAll('.select-times .timeRow').forEach(e => {
+		e.addEventListener("click", clickHandler);
+		e.addEventListener("mousemove", moveHandler);
+		e.addEventListener("mousedown", downHandler);
+		e.addEventListener("touch", clickHandler);
+		e.addEventListener("touchmove", moveHandler);
+		e.addEventListener("touchstart", downHandler);
+	});
 	window.addEventListener('beforeunload', unloadHandler);
 	$('#esSubmit').click(function(e) {
 	    e.preventDefault();
@@ -67,9 +70,8 @@ window.onload = function() {
 }
 
 function calculateSchedule() {
-	document.querySelectorAll('#select-times td').forEach( e => {
-	    if (e.className === "not-selected" || e.className === "selected")
-		    availability[e.id] = (e.className == "selected");
+	document.querySelectorAll('.select-times .timeRow').forEach( e => {
+		availability[e.id] = ($(e).hasClass('selected'));
 	});
 }
 
