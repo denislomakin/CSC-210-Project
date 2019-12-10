@@ -201,13 +201,10 @@ def setSchedule(eventId):
 
 @app.route('/loadSchedule/<int:eventId>', methods=['GET', 'POST'])
 def loadSchedule(eventId):
-    print(current_user.personal_schedule)
-    """
     event = get_event(eventId)
     event.user_schedules[current_user.username] = personal_to_event(current_user.personal_schedule, event)
     event.overlap_colors = create_overlap(Schedule(event), event.user_schedules)
     db.session.commit()
-    """
     return redirect('/'+str(eventId))
 
 @app.route('/logout')
