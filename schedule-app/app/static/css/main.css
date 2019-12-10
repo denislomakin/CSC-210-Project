@@ -519,3 +519,13 @@ td {
     left:2px!important;
     top:2px!important;
 }
+
+@media only screen and (orientation:portrait) {
+    #viewEventPage {
+        flex-direction:column;
+    }
+    #viewEventPage .col {
+        padding:20px;
+        width:100%;
+    }
+}
