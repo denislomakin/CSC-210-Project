@@ -237,9 +237,8 @@ def reset_request():
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
         token = user.get_reset_token()
-        send_mail('meetupeasyschedule@gmail.com', user.email, 'Reset Password', f'''Click the following link to reset your password:
-        {url_for('reset_token', token=token, _external=True)}
-        ''')
+        send_mail('meetupeasyschedule@gmail.com', user.email, 'Reset Password',
+                  'Click the following link to reset your password:' + url_for('reset_token', token=token, _external=True))
         flash('~Password Reset Email Sent.')
         return redirect('/')
     else:
