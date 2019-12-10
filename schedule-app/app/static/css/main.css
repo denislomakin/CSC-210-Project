@@ -363,25 +363,39 @@ input {
     color:#999;
     cursor:pointer;
 }
+.tableContainer {
+    width:100%;
+    height:100%;
+}
+.select-times {
+    border: 1px solid #ddd;
+    padding:8px;
+}
+.select-times tr:nth-child(even) {
+    background-color:#f2f2f2;
+}
+.select-times td {
+    border:2px solid #f0f0f0;
+}
+.select-times td:hover {
+	cursor:pointer;
+}
 
 .not-selected {
 	width: 100px;
-	background-color: #f0f0f0;
-	border: 1px solid black;
+	background-color:white;
 }
 
 .not-selected:hover {
-	background-color: white;
+	background-color:#f0f0f0;
 }
 
 .selected {
 	width: 100px;
-	background-color: #5f7eed;
-	border: 1px solid white;
+	background:#4285f4;
 }
-
 .selected:hover {
-	background-color: #849df5;
+    background:#3376E5
 }
 
 .time {

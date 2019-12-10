@@ -1,3 +1,4 @@
+/* from https://dubrox.github.io/Multiple-Dates-Picker-for-jQuery-UI/ */
 /* jQuery UI Datepicker moving pixels fix */
 table.ui-datepicker-calendar {border-collapse: separate;}
 .ui-datepicker-calendar td {border: 1px solid transparent;}
