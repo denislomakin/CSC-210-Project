@@ -61,6 +61,10 @@ class ScheduleForm(FlaskForm):
             redirect('/')
 
 
+class PScheduleForm(FlaskForm):
+    pAvailability = HiddenField('pAvailability', validators=[DataRequired()])
+
+
 class InviteToEventForm(FlaskForm):
     email = StringField('Email',validators=[DataRequired(), Email()])
     submit = SubmitField('Invite to Event')

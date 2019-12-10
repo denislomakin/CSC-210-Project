@@ -1,6 +1,6 @@
 import random
 from app import app, db
-from app.forms import LoginForm, SignupForm, EventForm,RequestResetForm, ResetPasswordForm, InviteToEventForm, ScheduleForm
+from app.forms import LoginForm, SignupForm, EventForm, RequestResetForm, ResetPasswordForm, InviteToEventForm, ScheduleForm, PScheduleForm
 from app.models import User,Event
 from app.scheduler import Schedule, create_overlap
 from flask import Flask, render_template, send_from_directory, redirect, url_for, flash,request
@@ -92,7 +92,7 @@ eventPlaceholders = ["The Mad Hatter's Tea Party", 'Robanukah', 'Weasel Stomping
 def render_home(page, event=None):
     if current_user.is_authenticated:
         events = current_user.rel
-    return render_template('home.html', user=current_user, lform=LoginForm(), sform=SignupForm(), eform=EventForm(), pform=RequestResetForm(), iform=InviteToEventForm(), aform=ScheduleForm(), eventPlaceholder=random.choice(eventPlaceholders), startPage=page, event=event, schedule=(None if (event is None) else Schedule(event)), userEvents=(current_user.rel if current_user.is_authenticated else None))
+    return render_template('home.html', user=current_user, lform=LoginForm(), sform=SignupForm(), eform=EventForm(), pform=RequestResetForm(), iform=InviteToEventForm(), aform=ScheduleForm(), psform=PScheduleForm(), eventPlaceholder=random.choice(eventPlaceholders), startPage=page, event=event, schedule=(None if (event is None) else Schedule(event)), userEvents=(current_user.rel if current_user.is_authenticated else None))
 
 
 @app.route('/')
@@ -178,9 +178,9 @@ def createEvent():
 
 @app.route('/setPersonalSchedule', methods=['GET', 'POST'])
 def setPSchedule():
-    form = ScheduleForm()
+    form = PScheduleForm()
     if form.validate_on_submit():
-        current_user.personal_schedule = json.loads(form.availability.data)
+        current_user.personal_schedule = json.loads(form.pAvailability.data)
         db.session.commit()
     else:
         flash_errors(form, '-')
