@@ -101,11 +101,13 @@ def index():
 
 @app.route('/<int:eventId>')
 def event(eventId):
+    event=get_event(eventId)
+    if event is None:
+        return redirect('/');
     if current_user.is_authenticated:
-        event=get_event(eventId)
         event.users.append(current_user)
         db.session.commit()
-    return render_home('viewEventPage', get_event(eventId))
+    return render_home('viewEventPage', event)
 
 
 @app.route('/login', methods=['GET', 'POST'])

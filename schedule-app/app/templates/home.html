@@ -88,7 +88,7 @@
                     </tr>
                 {% endfor %}
             </table>
-            <form id='eSchedule' name='schedule' method='POST' action='{{ url_for("setSchedule", eventId=Event.event_id) }}'>
+            <form id='eSchedule' name='schedule' method='POST' action='{{ url_for("setSchedule", eventId=event.event_id) }}'>
                 {{ aform.hidden_tag() }}
                 {{ aform.availability() }}
                  <div class='line'>{{ aform.user_name.label }}{{ aform.user_name() }}</div><br>
@@ -107,8 +107,8 @@
                 {% if user.is_authenticated %}
                     <a class='pageTurn button' data-target='psPage'>My Schedule</a>
                     <h3>Events</h3>
-                    {% for Event in userEvents%}
-                        <a class='eventLink sl' href="{{ url_for('event', eventId=Event.event_id) }}">{{Event.name}}</a>
+                    {% for event in userEvents%}
+                        <a class='eventLink sl' href="{{ url_for('event', eventId=event.event_id) }}">{{event.name}}</a>
                     {% endfor %}
                     <a class='pageTurn button' data-target='createEventPage'>Create a New Event</a>
                     <a class='button' href="{{ url_for('logout') }}">Log Out</a>
