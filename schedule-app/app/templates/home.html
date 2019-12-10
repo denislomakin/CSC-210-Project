@@ -62,7 +62,7 @@
                 </div>
             </div>
             <div class='col lb'>
-
+                
             </div>
         </div>
         <div id='invitePage' class='page hidden'>
@@ -88,9 +88,10 @@
                     </tr>
                 {% endfor %}
             </table>
-            <form id='eSchedule' name='schedule' method='POST' action='{{ url_for("setSchedule") }}'>
+            <form id='eSchedule' name='schedule' method='POST' action='{{ url_for("setSchedule", eventId=Event.event_id) }}'>
                 {{ aform.hidden_tag() }}
                 {{ aform.availability() }}
+                 <div class='line'>{{ aform.user_name.label }}{{ aform.user_name() }}</div><br>
                 <button id='esSubmit' type='submit' class='button'>Set Schedule</button>
             </form>
         </div>

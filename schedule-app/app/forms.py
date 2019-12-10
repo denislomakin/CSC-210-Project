@@ -52,6 +52,7 @@ class RequestResetForm(FlaskForm):
 
 
 class ScheduleForm(FlaskForm):
+    user_name = StringField('Your Name', validators=[InputRequired(), Length(max=64, message='-Name must not exceed 64 characters.')])
     availability = HiddenField('availability', validators=[DataRequired()])
 
 

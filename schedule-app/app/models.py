@@ -81,7 +81,8 @@ class Event(db.Model):
     start = db.Column(db.String(20))
     end = db.Column(db.String(20))
     dates = db.Column(db.String(512))
-    json_obj = db.Column(JsonData)
+    user_schedules = db.Column(JsonData)
+    overlap_colors = db.Column(JsonData)
     schedule_id = db.Column(db.Integer, db.ForeignKey("Users.user_id"))
     rel=db.relationship("Times", secondary=relationship2, backref=db.backref("events", lazy='dynamic'))
 

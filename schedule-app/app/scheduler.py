@@ -1,5 +1,6 @@
 from app.models import Event
 from datetime import datetime, timedelta
+from colour import Color
 
 class Schedule:
 	def __init__(self, event):
@@ -13,9 +14,8 @@ class Schedule:
 		self.times = [datetime.strftime(date, "%I:%M %p") for date in 
 					 		datetime_range(start_time_parsed, end_time_parsed,
 					 		timedelta(minutes=15))]
-							
-class ScheduleOverlap:
-	def __init__(self, schedule, avail_arr):
+
+def create_overlap(schedule, avail_arr):
 		id_list = []
 		for time in schedule.times:
 			for date in schedule.dates:
@@ -41,6 +41,7 @@ class ScheduleOverlap:
 			color_dict[id1] = colors[overall_avail[id1]]
 
 		return color_dict
+
 
 
 def datetime_range(start, end, delta):
