@@ -22,9 +22,11 @@ def personal_to_event(user_schedule, event):
                             timedelta(minutes=15))]
 
     user_availability = {}
-    for date in [(datetime.strptime(date, "%m/%d/%Y") for date in dates)]:
+    short_dates = [datetime.strftime(date, "%m/%d") for date in (datetime.strptime(date, "%m/%d/%Y") for date in dates)]
+    days_of_week = [datetime.strftime(date, "%A") for date in (datetime.strptime(date, "%m/%d/%Y") for date in dates)]
+    for i in range(len(short_dates)):
         for time in times:
-            user_availability[datetime.strftime(date, "%m/%d") + " " + time] = user_schedule[datetime.strftime(date, "%A") + " " + time]
+            user_availability[short_dates[i] + " " + time] = user_schedule[days_of_week[i] + " " + time]
 
     return user_availability
 

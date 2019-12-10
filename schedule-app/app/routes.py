@@ -2,7 +2,7 @@ import random
 from app import app, db
 from app.forms import LoginForm, SignupForm, EventForm, RequestResetForm, ResetPasswordForm, InviteToEventForm, ScheduleForm, PScheduleForm
 from app.models import User,Event
-from app.scheduler import Schedule, create_overlap
+from app.scheduler import Schedule, create_overlap, personal_to_event
 from flask import Flask, render_template, send_from_directory, redirect, url_for, flash,request
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from datetime import date,datetime,timedelta
@@ -197,6 +197,17 @@ def setSchedule(eventId):
         db.session.commit()
     else:
         flash_errors(form, '-')
+    return redirect('/'+str(eventId))
+
+@app.route('/loadSchedule/<int:eventId>', methods=['GET', 'POST'])
+def loadSchedule(eventId):
+    print(current_user.personal_schedule)
+    """
+    event = get_event(eventId)
+    event.user_schedules[current_user.username] = personal_to_event(current_user.personal_schedule, event)
+    event.overlap_colors = create_overlap(Schedule(event), event.user_schedules)
+    db.session.commit()
+    """
     return redirect('/'+str(eventId))
 
 @app.route('/logout')
