@@ -529,3 +529,9 @@ td {
         width:100%;
     }
 }
+
+@media only screen and (max-width:401px) {
+    .sidebar.open {
+        width:100%;
+    }
+}
