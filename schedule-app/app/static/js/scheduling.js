@@ -45,7 +45,6 @@ function unloadHandler(e) {
 		e.removeEventListener("mousemove", moveHandler);
 		e.removeEventListener("mousedown", downHandler);
 		e.removeEventListener("touch", clickHandler);
-		e.removeEventListener("touchmove", moveHandler);
 		e.removeEventListener("touchstart", downHandler);
 	});
 }
@@ -56,7 +55,6 @@ window.onload = function() {
 		e.addEventListener("mousemove", moveHandler);
 		e.addEventListener("mousedown", downHandler);
 		e.addEventListener("touch", clickHandler);
-		e.addEventListener("touchmove", moveHandler);
 		e.addEventListener("touchstart", downHandler);
 	});
 	window.addEventListener('beforeunload', unloadHandler);
