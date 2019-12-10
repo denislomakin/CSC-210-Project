@@ -59,6 +59,7 @@ def refresh_authorization(google_client_id, google_client_secret, refresh_token)
     return response['access_token'], response['expires_in']
 
 
+
 def send_mail(fromaddr, toaddr, subject, message):
 
     access_token, expires_in = refresh_authorization(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GOOGLE_REFRESH_TOKEN)
@@ -168,7 +169,7 @@ def createEvent():
     return redirect('/'+str(new_event.event_id))
 
 
-@app.route('/setSchedule', methods=['GET', 'POST'])
+@app.route('/setSchedule/<int:eventId>', methods=['GET', 'POST'])
 def setSchedule(eventId):
     form = ScheduleForm()
     event = get_event(eventId)
