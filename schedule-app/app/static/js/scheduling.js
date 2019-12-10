@@ -1,6 +1,5 @@
 var draggedSelect = false;
 var draggedUnselect = false;
-var availability = {};
 
 $(document).mouseup(function(e){
   draggedUnselect = false;
@@ -61,18 +60,26 @@ window.onload = function() {
 		e.addEventListener("touchstart", downHandler);
 	});
 	window.addEventListener('beforeunload', unloadHandler);
-	$('#esSubmit').click(function(e) {
+	$('.eSubmit').click(function(e) {
 	    e.preventDefault();
-	    calculateSchedule();
-	    $('#availability').val(JSON.stringify(availability));
-	    $('#eSchedule').submit();
-    })
+	    let jq = $(this);
+	    let availability = calculateSchedule($(this).data('target')); //eventScheduleSelect, personalScheduleSelect
+		print(availability);
+	});
+	// $('#esSubmit').click(function(e) {
+	//     e.preventDefault();
+	//     calculateSchedule();
+	//     $('#availability').val(JSON.stringify(availability));
+	//     $('#eSchedule').submit();
+    // })
 }
 
-function calculateSchedule() {
-	document.querySelectorAll('.select-times .timeRow').forEach( e => {
+function calculateSchedule(id) {
+	let availability = {};
+	document.querySelectorAll('#' + id + ' .select-times .timeRow').forEach( e => {
 		availability[e.id] = ($(e).hasClass('selected'));
 	});
+	return availability;
 }
 
 

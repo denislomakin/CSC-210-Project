@@ -65,7 +65,7 @@ footer {
     align-items:center;
     justify-content:center;
 }
-#editEventSchedulePage {
+#editEventSchedulePage, #psPage {
     flex-direction:column;
 }
 #viewEventPage {
@@ -83,6 +83,20 @@ footer {
 }
 .col.lb {
     background:#fbfbfb;
+    overflow-x:scroll;
+}
+#showTimes {
+	border-collapse: collapse;
+    display:block;
+    max-width:100% !important;
+}
+#showTimes td {
+    text-align:center;
+    min-width:120px;
+}
+#showTimes td.day {
+    font-size:20px;
+    padding-bottom:5px;
 }
 .page.hidden {
     display:none;
@@ -424,12 +438,6 @@ input {
 .day {
 	width: 50px;
 }
-
-table {
-	width: 700px;
-	border-collapse: collapse;
-}
-
 tr {
 	width: 200px;
 }

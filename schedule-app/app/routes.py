@@ -176,6 +176,17 @@ def createEvent():
     return redirect('/'+str(new_event.event_id))
 
 
+@app.route('/setPersonalSchedule', methods=['GET', 'POST'])
+def setPSchedule():
+    form = ScheduleForm()
+    if form.validate_on_submit():
+        current_user.personal_schedule = json.loads(form.availability.data)
+        db.session.commit()
+    else:
+        flash_errors(form, '-')
+    return redirect('/')
+
+
 @app.route('/setSchedule/<int:eventId>', methods=['GET', 'POST'])
 def setSchedule(eventId):
     form = ScheduleForm()
@@ -186,7 +197,7 @@ def setSchedule(eventId):
         db.session.commit()
     else:
         flash_errors(form, '-')
-    return redirect('/')
+    return redirect('/'+str(eventId))
 
 @app.route('/logout')
 @login_required

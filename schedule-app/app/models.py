@@ -43,6 +43,7 @@ class User(UserMixin, db.Model):
     username = db.Column(db.String(64), index=True, unique=True)
     email = db.Column(db.String(64), index=True, unique=True)
     password = db.Column(db.String(128))
+    personal_schedule = db.Column(JsonData)
     schedule = db.relationship("Event", backref="user", lazy=True,uselist=False)
     rel = db.relationship("Event", secondary=relationships, backref=db.backref("users",lazy='dynamic'))
 
