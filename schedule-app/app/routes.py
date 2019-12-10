@@ -161,7 +161,7 @@ def createEvent():
         if current_user.is_authenticated:
             new_event.users.append(current_user)
 			
-		colors = {}
+	colors = {}
         schedule = Schedule(new_event)
         for time in schedule.times:
             for date in schedule.dates:
