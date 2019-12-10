@@ -14,30 +14,45 @@ class Schedule:
                             datetime_range(start_time_parsed, end_time_parsed,
                             timedelta(minutes=15))]
 
+def personal_to_event(user_schedule, event):
+    dates = event.dates.split(",")
+    times = [datetime.strftime(date, "%I:%M %p") for date in 
+                            datetime_range(datetime.strptime(event.start, "%I:%M %p"),
+                            datetime.strptime(event.end, "%I:%M %p"),
+                            timedelta(minutes=15))]
+
+    user_availability = {}
+    for date in [(datetime.strptime(date, "%m/%d/%Y") for date in dates)]:
+        for time in times:
+            user_availability[datetime.strftime(date, "%m/%d") + " " + time] = user_schedule[datetime.strftime(date, "%A") + " " + time]
+
+    return user_availability
+
+
 def create_overlap(schedule, user_avail):
-        id_list = []
-        for time in schedule.times:
-            for date in schedule.dates:
-                id_list.append(date + " " + time)
+    id_list = []
+    for time in schedule.times:
+        for date in schedule.dates:
+            id_list.append(date + " " + time)
 
-        overall_avail = {}
-        avail_max = 0
+    overall_avail = {}
+    avail_max = 0
+    for id1 in id_list:
+        overall_avail[id1] = 0
+    for availability in user_avail.values():
         for id1 in id_list:
-            overall_avail[id1] = 0
-        for availability in user_avail.values():
-            for id1 in id_list:
-                if availability[id1]:
-                    overall_avail[id1] += 1
-                    if overall_avail[id1] > avail_max:
-                        avail_max = overall_avail[id1]
+            if availability[id1]:
+                overall_avail[id1] += 1
+                if overall_avail[id1] > avail_max:
+                    avail_max = overall_avail[id1]
 
-        colors = linear_gradient("#f0f0f0", "#5f7eed", avail_max+1)
+    colors = linear_gradient("#f0f0f0", "#5f7eed", avail_max+1)
 
-        color_dict = {}
-        for id1 in id_list:
-            color_dict[id1] = colors[overall_avail[id1]]
+    color_dict = {}
+    for id1 in id_list:
+        color_dict[id1] = colors[overall_avail[id1]]
 
-        return color_dict
+    return color_dict
 
 def datetime_range(start, end, delta):
     current = start
