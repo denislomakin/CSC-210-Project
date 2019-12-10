@@ -25,8 +25,9 @@ def create_overlap(schedule, avail_arr):
 		avail_max = 0
 		for id1 in id_list:
 			overall_avail[id1] = 0
-		for availability in avail_arr:
+		for prop in avail_arr:
 			for id1 in id_list:
+				availability = avail_arr[prop]
 				if availability[id1]:
 					overall_avail[id1] += 1
 					if overall_avail[id1] > avail_max:

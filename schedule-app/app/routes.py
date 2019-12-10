@@ -160,16 +160,13 @@ def createEvent():
         new_event = Event(name=form.eventName.data, start=form.startTime.data, end=form.endTime.data, dates=form.dates.data, creator=(current_user.username if current_user.is_authenticated else random.choice(anonymousNames)), creatorId=(current_user.user_id if current_user.is_authenticated else 0))
         if current_user.is_authenticated:
             new_event.users.append(current_user)
-			
-	colors = {}
+        colors = {}
         schedule = Schedule(new_event)
         for time in schedule.times:
             for date in schedule.dates:
                 colors[date + " " + time] = "#f0f0f0" 
         new_event.overlap_colors = colors
-
         new_event.user_schedules = {}
-		
         db.session.add(new_event)
         db.session.commit()
         flash('|'+form.eventName.data+' has been created with ID ' + str(new_event.event_id) + '.')
