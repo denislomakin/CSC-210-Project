@@ -100,5 +100,3 @@ class Times(db.Model):
     time_id = db.Column(db.Integer, primary_key=True,autoincrement=True)
     start = db.Column(db.DateTime(), nullable=False)
     end = db.Column(db.DateTime(), nullable=False)
-    
-    

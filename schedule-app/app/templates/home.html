@@ -62,7 +62,22 @@
                 </div>
             </div>
             <div class='col lb'>
-                
+                <table id="select-times">
+                    <tr class="days">
+                        <td class="day"></td>
+                        {% for i in range(schedule.days| length) %}
+                            <td class="day">{{ schedule.days[i] }} {{ schedule.dates[i] }}</td>
+                        {% endfor %}
+                    </tr>
+                    {% for time in schedule.times %}
+                        <tr>
+                            <td class="time">{{ time }}</td>
+                            {% for date in schedule.dates %}
+                                <td style="width: 100px; border: 1px solid black; background-color: {{ event.overlap_colors[ date ~ ' ' ~ time] }};"></td>
+                            {% endfor %}
+                        </tr>
+                    {% endfor %}
+                </table>
             </div>
         </div>
         <div id='invitePage' class='page hidden'>
@@ -80,6 +95,7 @@
                         {% for i in range(schedule.days| length) %}
                             <td class="day">{{ schedule.days[i] }} {{ schedule.dates[i] }}</td>
                         {% endfor %}
+					</tr>
                     {% for time in schedule.times %}
                         <tr>
                             <td class="time">{{ time }}</td>
@@ -89,7 +105,7 @@
                         </tr>
                     {% endfor %}
                 </table>
-                {%if event %}
+                {% if event %}
                 <form id='eSchedule' name='schedule' method='POST' action='{{ url_for("setSchedule", eventId=event.event_id) }}'>
                     {{ aform.hidden_tag() }}
                     {{ aform.availability() }}
