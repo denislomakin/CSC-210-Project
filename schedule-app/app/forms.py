@@ -55,6 +55,11 @@ class ScheduleForm(FlaskForm):
     user_name = StringField('Your Name', validators=[InputRequired(), Length(max=64, message='-Name must not exceed 64 characters.')])
     availability = HiddenField('availability', validators=[DataRequired()])
 
+    def validate_name(self, user_name):
+        if User.query.filter_by(username=user_name.data).first() is not None:
+            raise ValidationError('-Cannot use that name')
+            redirect('/')
+
 
 class InviteToEventForm(FlaskForm):
     email = StringField('Email',validators=[DataRequired(), Email()])
