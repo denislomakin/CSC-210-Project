@@ -223,7 +223,7 @@ def invite(eventId):
         send_mail('meetupeasyschedule@gmail.com',
                   email,
                   event.name,
-                  'You have been invited to ' + event.name + '. Follow url to schedule the event: meetup.mitchelljones.com/' + eventId)
+                  'You have been invited to ' + event.name + '. Follow url to schedule the event: meetup.mitchelljones.com/' + str(eventId))
     else:
         flash_errors(form, '-')
     return redirect('/'+str(event.event_id))
